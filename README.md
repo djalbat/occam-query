@@ -1,6 +1,6 @@
 # Custom DOM
 
-Occam's DOM related functionality.
+[Occam](https://github.com/jecs-imperial/occam)'s DOM related functionality.
 
 ### Contents
 

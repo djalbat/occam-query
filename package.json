@@ -1,7 +1,7 @@
 {
   "name": "occam-dom",
   "author": "James Smith",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "homepage": "https://github.com/jecs-imperial/occam-dom",
   "description": "Occam's DOM related functionality.",
@@ -10,7 +10,7 @@
     "url": "https://github.com/jecs-imperial/occam-dom"
   },
   "dependencies": {
-    "occam-lexers": "^8.0.21",
+    "necessary": "^3.2.5",
     "occam-parsers": "^8.0.11"
   },
   "devDependencies": {

@@ -33,10 +33,10 @@ class ExpressionInput extends InputElement {
           setExpression = this.setExpression.bind(this);
 
     return ({
-      getExpression,
-      setExpression,
       showError,
-      hideError
+      hideError,
+      getExpression,
+      setExpression
     });
   }
 
@@ -46,7 +46,7 @@ class ExpressionInput extends InputElement {
 Object.assign(ExpressionInput, {
   tagName: 'input',
   defaultProperties: {
-    className: 'lexical-pattern',
+    className: 'expression',
     spellCheck: 'false'
   }
 });

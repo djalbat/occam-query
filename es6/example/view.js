@@ -1,23 +1,48 @@
 'use strict';
 
 const easy = require('easy'),
+      lexers = require('occam-lexers'),
+      parsers = require('occam-parsers'),
       easyLayout = require('easy-layout');
 
-const ExpressionInput = require('./input/expression'),
+const NodesTextarea = require('./textarea/nodes'),
+      exampleContent = require('../example/content'),
+      ExpressionInput = require('./input/expression'),
       ContentTextarea = require('./textarea/content'),
+      queryUtilities = require('../utilities/query'),
+      exampleExpression = require('../example/expression'),
       ParseTreeTextarea = require('./textarea/parseTree'),
       MainVerticalSplitter = require('./verticalSplitter/main');
 
 const { Element } = easy,
-      { SizeableElement } = easyLayout;
+      { FlorenceLexer } = lexers,
+      { FlorenceParser } = parsers,
+      { SizeableElement } = easyLayout,
+      { queryByExpression } = queryUtilities;
+
+const florenceLexer = FlorenceLexer.fromNothing(),
+      florenceParser = FlorenceParser.fromNothing();
 
 class View extends Element {
   keyUpHandler() {
     try {
-      ///
+      const content = this.getContent(),
+            tokens = florenceLexer.tokenise(content),
+            node = florenceParser.parse(tokens),
+            parseTree = node.asParseTree(tokens),
+            expression = this.getExpression(),
+            nodes = queryByExpression(node, expression);
 
       this.hideError();
+
+      this.setNodes(nodes);
+
+      this.setParseTree(parseTree);
     } catch (error) {
+      this.clearParseTree();
+
+      this.clearNodes();
+
       this.showError();
     }
   }
@@ -44,6 +69,10 @@ class View extends Element {
             Parse tree
           </h2>
           <ParseTreeTextarea />
+          <h2>
+            Nodes
+          </h2>
+          <NodesTextarea />
         </div>
       </div>
 
@@ -52,6 +81,13 @@ class View extends Element {
 
   initialise() {
     this.assignContext();
+
+    const content = exampleContent, ///
+          expression = exampleExpression; ///
+
+    this.setContent(content);
+
+    this.setExpression(expression);
 
     this.keyUpHandler();  ///
   }

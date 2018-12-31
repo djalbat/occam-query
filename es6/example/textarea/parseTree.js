@@ -6,16 +6,27 @@ const { InputElement } = easy;
 
 class ParseTreeTextarea extends InputElement {
   setParseTree(parseTree) {
-    const value = parseTree || '';  ///
+    parseTree.shiftLine();  //
+
+    const parseTreeString = parseTree.asString(),
+        value = parseTreeString;  ///
+
+    this.setValue(value);
+  }
+
+  clearParseTree() {
+    const value = '';
 
     this.setValue(value);
   }
 
   parentContext() {
-    const setParseTree = this.setParseTree.bind(this);
+    const setParseTree = this.setParseTree.bind(this),
+          clearParseTree = this.clearParseTree.bind(this);
 
     return ({
-      setParseTree
+      setParseTree,
+      clearParseTree
     });
   }
 

@@ -1,5 +1,7 @@
 'use strict';
 
+const Query = require('../query');
+
 function queryByClass(node, Class, nodes = []) {
   if (node instanceof Class) {
     nodes.push(node);
@@ -40,7 +42,15 @@ function queryByClasses(node, Classes, nodes = []) {
   return nodes;
 }
 
+function queryByExpression(node, expression) {
+  const query = Query.fromExpression(expression),
+        nodes = query.execute(node);
+
+  return nodes;
+}
+
 module.exports = {
   queryByClass,
-  queryByClasses
+  queryByClasses,
+  queryByExpression
 };

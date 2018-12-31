@@ -2,24 +2,29 @@
 
 const easy = require('easy');
 
-const { InputElement } = easy;
+const tokenUtilities = require('../../utilities/token');
+
+const { InputElement } = easy,
+      { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } = tokenUtilities;
 
 class NodesTextarea extends InputElement {
-  setNodes(nodes) {
+  setNodes(nodes, tokens) { ///
     const value = nodes.reduce(function(value, node) {
             const nodeTerminalNode = node.isTerminalNode();
 
             if (nodeTerminalNode) {
               const terminalNode = node,  ///
                     significantToken = terminalNode.getSignificantToken(),
-                    significantTokenType = significantToken.getType();
+                    significantTokenType = significantToken.getType(),
+                    tokenIndex = tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens);
 
-              value = `${value}[${significantTokenType}]\n`;
+              value = `${value}[${significantTokenType}]${tokenIndex}\n`;
             } else {
               const nonTerminalNode = node, ///
-                    ruleName = nonTerminalNode.getRuleName();
+                    ruleName = nonTerminalNode.getRuleName(),
+                    tokenIndexes = tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens);
 
-              value = `${value}${ruleName}\n`;
+              value = `${value}${ruleName}${tokenIndexes}\n`;
             }
 
             return value;

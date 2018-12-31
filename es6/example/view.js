@@ -35,7 +35,7 @@ class View extends Element {
 
       this.hideError();
 
-      this.setNodes(nodes);
+      this.setNodes(nodes, tokens); ///
 
       this.setParseTree(parseTree);
     } catch (error) {

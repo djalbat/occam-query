@@ -10,8 +10,7 @@
     "url": "https://github.com/jecs-imperial/occam-dom"
   },
   "dependencies": {
-    "necessary": "^3.2.5",
-    "occam-parsers": "^8.0.11"
+    "necessary": "^3.2.5"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -23,7 +22,9 @@
     "chokidar-cli": "^1.2.0",
     "easy": "^7.10.0",
     "easy-layout": "^2.1.46",
-    "juxtapose": "^1.0.89"
+    "juxtapose": "^1.0.89",
+    "occam-lexers": "^8.0.33",
+    "occam-parsers": "^8.0.37"
   },
   "scripts": {
     "clean": "rm -rf ./lib",

@@ -72,7 +72,7 @@ const node = ...,
 
 ...
 ```
-If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method as follows:
+If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method:
 
 ```js
 const dom = require('occam-dom');
@@ -86,7 +86,7 @@ const node = ...,
 
 ...
 ```
-This is quicker than using the `queryByExpression()` function, which does nothing but create such an object each time it is invoked.
+This is quicker than using the `queryByExpression()` function, which will create such an object each time it is invoked.
 
 ## Example
 

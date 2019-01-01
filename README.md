@@ -15,21 +15,21 @@
 This package provides the means to query the document object model return by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers). Consider the following parse tree, essentially the document's stringified DOM:
 
 ```
-                            term
-                              |
-               ------------------------------
-               |                            |
-        constructorName             parenthesisedTerms
-               |                            |
-         s[unassigned]         ----------------------------
-                               |            |             |
-                          ([special]      terms      )[special]
-                                                          |
-                                                        term
-                                                          |
-                                                   constructorName
-                                                          |
-                                                    k[unassigned]
+                                       term
+                                         |
+                          ------------------------------
+                          |                            |
+                   constructorName             parenthesisedTerms
+                          |                            |
+                    s[unassigned]         ----------------------------
+                                          |            |             |
+                                     ([special]      terms      )[special]
+                                                                     |
+                                                                   term
+                                                                     |
+                                                              constructorName
+                                                                     |
+                                                               k[unassigned]
 ```
 
 ## Installation

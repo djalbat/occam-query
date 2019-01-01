@@ -24,23 +24,27 @@ const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
 
 class View extends Element {
-  keyUpHandler() {
+  contentKeyUpHandler() {
+    const content = this.getContent(),
+          tokens = florenceLexer.tokenise(content),
+          node = florenceParser.parse(tokens),
+          parseTree = node.asParseTree(tokens);
+
+    this.setParseTree(parseTree);
+  }
+
+  expressionKeyUpHandler() {
     try {
       const content = this.getContent(),
             tokens = florenceLexer.tokenise(content),
             node = florenceParser.parse(tokens),
-            parseTree = node.asParseTree(tokens),
             expression = this.getExpression(),
             nodes = queryByExpression(node, expression);
 
       this.hideError();
 
       this.setNodes(nodes, tokens); ///
-
-      this.setParseTree(parseTree);
     } catch (error) {
-      this.clearParseTree();
-
       this.clearNodes();
 
       this.showError();
@@ -48,7 +52,8 @@ class View extends Element {
   }
 
   childElements(properties) {
-    const keyUpHandler = this.keyUpHandler.bind(this);
+    const contentKeyUpHandler = this.contentKeyUpHandler.bind(this),
+          expressionKeyUpHandler = this.expressionKeyUpHandler.bind(this);
 
     return (
 
@@ -57,11 +62,11 @@ class View extends Element {
           <h2>
             Expression
           </h2>
-          <ExpressionInput onKeyUp={keyUpHandler} />
+          <ExpressionInput onKeyUp={expressionKeyUpHandler} />
           <h2>
             Content
           </h2>
-          <ContentTextarea onKeyUp={keyUpHandler} />
+          <ContentTextarea onKeyUp={contentKeyUpHandler} />
         </SizeableElement>
         <MainVerticalSplitter />
         <div className="column">
@@ -89,7 +94,9 @@ class View extends Element {
 
     this.setExpression(expression);
 
-    this.keyUpHandler();  ///
+    this.contentKeyUpHandler();  ///
+
+    this.expressionKeyUpHandler();  ///
   }
 
   static fromProperties(properties) {

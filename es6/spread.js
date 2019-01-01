@@ -1,10 +1,13 @@
 'use strict';
 
+const arrayUtilities = require('./utilities/array');
+
+const { second, third, fourth } = arrayUtilities;
+
 class Spread {
   constructor(startIndex, endIndex) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
-
     this.index = 0;
   }
 
@@ -22,12 +25,12 @@ class Spread {
     let startIndex = -1,
         endIndex = Number.POSITIVE_INFINITY;
 
-    if (expression !== undefined) {
-      const regExp = /\[(\d+)?(\.\.\.)?(\d+)?\]/,
-          matches = expression.match(regExp),
-          secondMatch = second(matches),
-          thirdMatch = third(matches),
-          fourthMatch = fourth(matches);
+    if (expression) {
+      const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
+            matches = expression.match(regExp),
+            secondMatch = second(matches),
+            thirdMatch = third(matches),
+            fourthMatch = fourth(matches);
 
       if (secondMatch !== undefined) {
         startIndex = parseInt(secondMatch);
@@ -53,7 +56,3 @@ class Spread {
 }
 
 module.exports = Spread;
-
-function second(array) { return array[1]; }
-function third(array) { return array[2]; }
-function fourth(array) { return array[3]; }

@@ -14,19 +14,11 @@ class ParseTreeTextarea extends InputElement {
     this.setValue(value);
   }
 
-  clearParseTree() {
-    const value = '';
-
-    this.setValue(value);
-  }
-
   parentContext() {
-    const setParseTree = this.setParseTree.bind(this),
-          clearParseTree = this.clearParseTree.bind(this);
+    const setParseTree = this.setParseTree.bind(this);
 
     return ({
-      setParseTree,
-      clearParseTree
+      setParseTree
     });
   }
 

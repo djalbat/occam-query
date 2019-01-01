@@ -15,22 +15,31 @@
 This package provides the means to query the document object model return by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers). Consider the following parse tree, essentially the document's stringified DOM:
 
 ```
-                                       term
-                                         |
-                          ------------------------------
-                          |                            |
-                   constructorName             parenthesisedTerms
-                          |                            |
-                    s[unassigned]         ----------------------------
-                                          |            |             |
-                                     ([special]      terms      )[special]
-                                                                     |
-                                                                   term
-                                                                     |
-                                                              constructorName
-                                                                     |
-                                                               k[unassigned]
+                                         term
+                                           |
+                            ------------------------------
+                            |                            |
+                     constructorName             parenthesisedTerms
+                            |                            |
+                      s[unassigned]         ----------------------------
+                                            |            |             |
+                                       ([special]      terms      )[special]
+                                                                       |
+                                                                     term
+                                                                       |
+                                                                constructorName
+                                                                       |
+                                                                 k[unassigned]
 ```
+Here are some example query expressions and their meaning:
+
+* `/term` matches the topmost non-terminal node of that name.
+* `//term` matches both the topmost and nested non-terminal nodes of that name.
+* `/*/*` matches all second-level non-terminal nodes, in this case the `constructorName` and `parenthesisedTerms` nodes.
+* `//constructorName[1]` matches the second of all `constructorName` non-terminal nodes at an arbitrary depth
+* `//constructorName/@*` matches any immediate, descendant terminal nodes of all `constructorName` non-terminal nodes.
+
+And so on. Further details are given in the example.
 
 ## Installation
 

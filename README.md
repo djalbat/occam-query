@@ -59,7 +59,9 @@ You will need to do this if you want to look at the example.
 
 ## Example
 
-To come.
+There is one example with a given DOM and starting query expression. To view it, open the `example.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree, or the expression, which will update the nodes. The spread of the tokens that the nodes enclose are given in parenthesis after the node names, which should allow you to locate any nodes returned in the DOM.
+
+A query consists of a leading, forward slash `/` followed by an optional forward slash to signify infinte descent, followed by a list of either non-terminal node rule names or terminal node significant token types, finally followed by an optional spread expression and sub-query. You cannot mix rule names and significant token types and the sub-queries of query expressions with significant token types are ignored. Further explanation would likely just confuse. It is best simply to play around with the expression to pick out different sets of nodes from the DOM.
 
 ## Building
 

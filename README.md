@@ -6,6 +6,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Usage](#usage)
 - [Example](#example)
 - [Building](#building)
 - [Contact](#contact)
@@ -56,6 +57,36 @@ You can also clone the repository with [Git](https://git-scm.com/)...
     npm install
 
 You will need to do this if you want to look at the example.
+
+## Usage
+
+```js
+const dom = require('occam-dom');
+
+const { queryUtilities } = dom,
+      { queryByExpression } = queryUtilities;
+
+const node = ...,
+      expression = '...',
+      nodes = queryByExpression(node);
+
+...
+```
+If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method as follows:
+
+```js
+const dom = require('occam-dom');
+
+const { Query } = dom;
+
+const node = ...,
+      expression = '...',
+      query = Query.fromExpression(expression)
+      nodes = query.execute(node);
+
+...
+```
+This is quicker than using the `queryByExpression()` function, which does nothing but create such an object each time it is invoked.
 
 ## Example
 

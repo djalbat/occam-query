@@ -8,28 +8,24 @@ const { WILDCARD_CHARACTER } = constants,
       { includes, second, third, fourth, fifth } = arrayUtilities;
 
 class Query {
-  constructor(significantTokenTypes, ruleNames, spread, subQuery, maximumDepth, infiniteDescent) {
+  constructor(significantTokenTypes, infiniteDescent, ruleNames, spread, subQuery, maximumDepth) {
     this.significantTokenTypes = significantTokenTypes;
+    this.infiniteDescent = infiniteDescent;
     this.ruleNames = ruleNames;
     this.spread = spread;
     this.subQuery = subQuery;
     this.maximumDepth = maximumDepth;
-    this.infiniteDescent = infiniteDescent;
   }
   
   execute(node, depth = 0) {
     let nodes = [];
 
-    if (depth > this.maximumDepth) {
-      ///
-    } else {
+    if (depth <= this.maximumDepth) {
       depth++;
 
       const nodeTerminalNode = node.isTerminalNode();
 
-      if (false) {
-				///
-      } else if (nodeTerminalNode) {
+      if (nodeTerminalNode) {
         const terminalNode = node,  ///
               significantToken = terminalNode.getSignificantToken(),
               significantTokenType = significantToken.getType(),
@@ -77,7 +73,7 @@ class Query {
     return nodes;
   }
 
-  static fromExpression(expression, depth) {
+  static fromExpression(expression, maximumDepth = Infinity) {
     if (expression === undefined) { ///
       return null;
     }
@@ -92,23 +88,16 @@ class Query {
           spreadExpression = fourthMatch,  ///
           subExpression = fifthMatch,  ///
           significantTokenTypes = significantTokenTypesFromSelectors(selectors),
-          significantTokenTypesLength = significantTokenTypes.length;
-
-    let ruleNames,
-        subQuery;
-
-    if (significantTokenTypesLength > 0) {
-      ruleNames = [];
-      subQuery = null;
-    } else {
-      ruleNames = ruleNamesFromSelectors(selectors);
-      subQuery = Query.fromExpression(subExpression);
-    }
-
-    const spread = Spread.fromExpression(spreadExpression),
-          maximumDepth = depth || Infinity,
+          significantTokenTypesLength = significantTokenTypes.length,
           infiniteDescent = (secondMatch === '/'),  ///
-          query = new Query(significantTokenTypes, ruleNames, spread, subQuery, maximumDepth, infiniteDescent);
+          ruleNames = (significantTokenTypesLength === 0) ?
+                        ruleNamesFromSelectors(selectors) :
+                          [],
+          spread = Spread.fromExpression(spreadExpression),
+          subQuery = (significantTokenTypesLength === 0) ?
+                       Query.fromExpression(subExpression) :
+                         null,
+          query = new Query(significantTokenTypes, infiniteDescent, ruleNames, spread, subQuery, maximumDepth);
     
     return query;
   }

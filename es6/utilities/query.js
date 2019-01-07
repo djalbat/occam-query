@@ -42,8 +42,8 @@ function queryByClasses(node, Classes, nodes = []) {
   return nodes;
 }
 
-function queryByExpression(node, expression) {
-  const query = Query.fromExpression(expression),
+function queryByExpression(node, expression, maximumDepth) {
+  const query = Query.fromExpression(expression, maximumDepth),
         nodes = query.execute(node);
 
   return nodes;

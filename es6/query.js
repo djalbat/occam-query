@@ -27,16 +27,20 @@ class Query {
 
       if (nodeTerminalNode) {
         const terminalNode = node,  ///
-              significantToken = terminalNode.getSignificantToken(),
-              significantTokenType = significantToken.getType(),
-              found = includes(this.significantTokenTypes, significantTokenType, WILDCARD_CHARACTER);
+              terminalNodeEpsilonNode = terminalNode.isEpsilonNode();
 
-        if (found) {
-          if (this.spread.isBetween()) {
-            nodes = [node];
+        if (!terminalNodeEpsilonNode) {
+          const significantToken = terminalNode.getSignificantToken(),
+                significantTokenType = significantToken.getType(),
+                found = includes(this.significantTokenTypes, significantTokenType, WILDCARD_CHARACTER);
+
+          if (found) {
+            if (this.spread.isBetween()) {
+              nodes = [node];
+            }
+
+            this.spread.incrementIndex();
           }
-
-          this.spread.incrementIndex();
         }
       } else {
         const nonTerminalNode = node, ///

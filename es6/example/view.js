@@ -7,11 +7,11 @@ const easy = require('easy'),
 
 const NodesTextarea = require('./textarea/nodes'),
       exampleContent = require('../example/content'),
+      queryUtilities = require('../utilities/query'),
       ExpressionInput = require('./input/expression'),
       ContentTextarea = require('./textarea/content'),
-      queryUtilities = require('../utilities/query'),
-      exampleExpression = require('../example/expression'),
       ParseTreeTextarea = require('./textarea/parseTree'),
+      exampleExpression = require('../example/expression'),
       MainVerticalSplitter = require('./verticalSplitter/main');
 
 const { Element } = easy,

@@ -38,11 +38,11 @@ Constructor[keyword](0)           constructorDeclaration(2-4)          [end-of-l
 Here are some example query expressions and their meaning:
 
 * `/document` matches the topmost non-terminal node of that name.
-* `//term` matches any non-terminal nodes of that name.
+* `//term` matches all non-terminal nodes of that name.
 * `//@end-of-line[1]` matches the second of all terminal nodes of type `end-of-line`.
 * `/*/*` matches all second-level non-terminal nodes, in this case the `declaration` and `verticalSpace` nodes.
 
-In essence, the unadorned parts of the paths such as `term` or `declaration` match the rule names of non-terminal nodes, whilst the attribute style parts such as `@unassigned` match the types of the terminal nodes, which are in fact the types of their underlying significant tokens.
+In essence, the unadorned parts of paths such as `term` or `declaration` match the rule names of non-terminal nodes, whilst the attribute style parts such as `@end-of-line` match the types of the terminal nodes, which are in fact the types of their underlying significant tokens.
 
 ## Installation
 

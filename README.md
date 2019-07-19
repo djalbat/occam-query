@@ -16,15 +16,15 @@
 This package provides the means to query the document object model return by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers). Consider the following parse tree, essentially the document's stringified DOM:
 
 ```
-                                                                    document(0-7)
-                                                                          |
-                                               ------------------------------------------------------
-                                               |                                                    |
-                                       declaration(0-5)                                     verticalSpace(7)
-                                               |                                                    |
-           -------------------------------------------------------------------------        [end-of-line](7)
-           |                                   |                                   |
-Constructor[keyword](0)           constructorDeclaration(2-4)              [end-of-line](5)
+                                                                  document(0-7)
+                                                                        |
+                                               --------------------------------------------------
+                                               |                                                |
+                                       declaration(0-5)                                 verticalSpace(7)
+                                               |                                                |
+           ---------------------------------------------------------------------        [end-of-line](7)
+           |                                   |                               |
+Constructor[keyword](0)           constructorDeclaration(2-4)          [end-of-line](5)
                                                |
                            ----------------------------------------
                            |                |                     |

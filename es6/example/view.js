@@ -28,7 +28,9 @@ class View extends Element {
     const content = this.getContent(),
           tokens = florenceLexer.tokenise(content),
           node = florenceParser.parse(tokens),
-          parseTree = node.asParseTree(tokens);
+          parseTree = (node !== null) ?
+                        node.asParseTree(tokens) :
+                          null;
 
     this.setParseTree(parseTree);
   }

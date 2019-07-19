@@ -8,12 +8,12 @@ const { WILDCARD_CHARACTER } = constants,
       { includes, second, third, fourth, fifth } = arrayUtilities;
 
 class Query {
-  constructor(significantTokenTypes, infiniteDescent, ruleNames, spread, subQuery, maximumDepth) {
-    this.significantTokenTypes = significantTokenTypes;
-    this.infiniteDescent = infiniteDescent;
+  constructor(ruleNames, types, spread, subQuery, infiniteDescent, maximumDepth) {
     this.ruleNames = ruleNames;
+    this.types = types;
     this.spread = spread;
     this.subQuery = subQuery;
+    this.infiniteDescent = infiniteDescent;
     this.maximumDepth = maximumDepth;
   }
   
@@ -30,9 +30,8 @@ class Query {
               terminalNodeEpsilonNode = terminalNode.isEpsilonNode();
 
         if (!terminalNodeEpsilonNode) {
-          const significantToken = terminalNode.getSignificantToken(),
-                significantTokenType = significantToken.getType(),
-                found = includes(this.significantTokenTypes, significantTokenType, WILDCARD_CHARACTER);
+          const type = terminalNode.getType(),
+                found = includes(this.types, type, WILDCARD_CHARACTER);
 
           if (found) {
             if (this.spread.isBetween()) {
@@ -91,17 +90,17 @@ class Query {
           selectors = thirdMatch.split('|'),  ///
           spreadExpression = fourthMatch,  ///
           subExpression = fifthMatch,  ///
-          significantTokenTypes = significantTokenTypesFromSelectors(selectors),
-          significantTokenTypesLength = significantTokenTypes.length,
-          infiniteDescent = (secondMatch === '/'),  ///
-          ruleNames = (significantTokenTypesLength === 0) ?
+          types = typesFromSelectors(selectors),
+          typesLength = types.length,
+          ruleNames = (typesLength === 0) ?
                         ruleNamesFromSelectors(selectors) :
                           [],
           spread = Spread.fromExpression(spreadExpression),
-          subQuery = (significantTokenTypesLength === 0) ?
+          subQuery = (typesLength === 0) ?
                        Query.fromExpression(subExpression) :
                          null,
-          query = new Query(significantTokenTypes, infiniteDescent, ruleNames, spread, subQuery, maximumDepth);
+          infiniteDescent = (secondMatch === '/'),  ///
+          query = new Query(ruleNames, types, spread, subQuery, infiniteDescent, maximumDepth);
     
     return query;
   }
@@ -109,24 +108,24 @@ class Query {
 
 module.exports = Query;
 
-function significantTokenTypesFromSelectors(selectors) {
-  const significantTokenTypes = [];
+function typesFromSelectors(selectors) {
+  const types = [];
 
   selectors.forEach(function(selector) {
-    const selectorTokenTypeSelector = isSelectorTokenTypeSelector(selector);
+    const selectorTypeSelector = isSelectorTypeSelector(selector);
 
-    if (selectorTokenTypeSelector) {
-      const tokenType = selector.substring(1);
+    if (selectorTypeSelector) {
+      const type = selector.substring(1);
 
-      significantTokenTypes.push(tokenType);
+      types.push(type);
     }
   });
 
-  return significantTokenTypes;
+  return types;
 }
 
-function isSelectorTokenTypeSelector(selector) { return /^@/.test(selector); }
+function isSelectorTypeSelector(selector) { return /^@/.test(selector); }
 
-function ruleNamesFromSelectors(selectors) { return selectors.filter(isSelectorRuleName); }
+function ruleNamesFromSelectors(selectors) { return selectors.filter(isSelectorRuleNameSelector); }
 
-function isSelectorRuleName(selector) { return /^[^@]/.test(selector); }
+function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }

@@ -15,7 +15,7 @@
 
 This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting nodes from document object models returned by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers).
 
-A query expression consists of a leading, forward slash `/` followed by an optional forward slash to signify arbitrary depth, followed by a list of either non-terminal node rule names or terminal node significant token types, finally followed by an optional spread expression and a sub-query. You cannot mix rule names and significant token types and the sub-queries of query expressions with significant token types are ignored. Further explanation would likely just confuse. It is best simply to play around with the expression to pick out different sets of nodes from the DOM.
+A query expression consists of a leading, forward slash `/` followed by an optional forward slash to signify arbitrary depth, followed by a list of either non-terminal node rule names or terminal node significant token types, finally followed by an optional spread expression and a sub-query. You cannot mix rule names and significant token types and the sub-queries of query expressions with significant token types are ignored. Further explanation would likely just confuse. It is best simply to play around with the expression in the example to select different nodes.
 
 Here is an example DOM together with some query expressions and their meaning, to help clarify:
 ```
@@ -42,8 +42,6 @@ Constructor[keyword](0)           constructorDeclaration(2-4)          [end-of-l
 * `//term` matches all non-terminal nodes of that name.
 * `//@end-of-line[1]` matches the second of all terminal nodes of type `end-of-line`.
 * `/*/*` matches all second-level non-terminal nodes, in this case the `declaration` and `verticalSpace` nodes.
-
-In essence, the unadorned parts of expressions such as `term` or `declaration` match the rule names of non-terminal nodes, whilst the attribute style parts such as `@end-of-line` match the types of the terminal nodes, which are in fact the types of their underlying significant tokens.
 
 ## Installation
 

@@ -6,12 +6,11 @@ const easy = require('easy'),
       easyLayout = require('easy-layout');
 
 const NodesTextarea = require('./textarea/nodes'),
-      exampleContent = require('../example/content'),
       queryUtilities = require('../utilities/query'),
       ExpressionInput = require('./input/expression'),
       ContentTextarea = require('./textarea/content'),
       ParseTreeTextarea = require('./textarea/parseTree'),
-      exampleExpression = require('../example/expression'),
+      MaximumDepthInput = require('./input/maximumDepth'),
       MainVerticalSplitter = require('./verticalSplitter/main');
 
 const { Element } = easy,
@@ -24,24 +23,14 @@ const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
 
 class View extends Element {
-  contentKeyUpHandler() {
-    const content = this.getContent(),
-          tokens = florenceLexer.tokenise(content),
-          node = florenceParser.parse(tokens),
-          parseTree = (node !== null) ?
-                        node.asParseTree(tokens) :
-                          null;
-
-    this.setParseTree(parseTree);
-  }
-
-  expressionKeyUpHandler() {
+  keyUpHandler() {
     try {
       const content = this.getContent(),
             tokens = florenceLexer.tokenise(content),
             node = florenceParser.parse(tokens),
             expression = this.getExpression(),
-            nodes = queryByExpression(node, expression);
+            maximumDepth = this.getMaximumDepth(),
+            nodes = queryByExpression(node, expression, maximumDepth);
 
       this.hideError();
 
@@ -53,9 +42,20 @@ class View extends Element {
     }
   }
 
+  contentKeyUpHandler() {
+    const content = this.getContent(),
+          tokens = florenceLexer.tokenise(content),
+          node = florenceParser.parse(tokens),
+          parseTree = (node !== null) ?
+                        node.asParseTree(tokens) :
+                          null;
+
+    this.setParseTree(parseTree);
+  }
+
   childElements(properties) {
     const contentKeyUpHandler = this.contentKeyUpHandler.bind(this),
-          expressionKeyUpHandler = this.expressionKeyUpHandler.bind(this);
+          keyUpHandler = this.keyUpHandler.bind(this);
 
     return (
 
@@ -64,7 +64,11 @@ class View extends Element {
           <h2>
             Expression
           </h2>
-          <ExpressionInput onKeyUp={expressionKeyUpHandler} />
+          <ExpressionInput onKeyUp={keyUpHandler} />
+          <h2>
+            Maximum depth
+          </h2>
+          <MaximumDepthInput onKeyUp={keyUpHandler} />
           <h2>
             Content
           </h2>
@@ -89,16 +93,25 @@ class View extends Element {
   initialise() {
     this.assignContext();
 
-    const content = exampleContent, ///
-          expression = exampleExpression; ///
+    const content = `
+
+Type NaturalNumber
+
+Constructor zero:NaturalNumber
+  
+`,
+          expression = '//constructorDeclaration/term//@unassigned',
+          maximumDepth = 5;
 
     this.setContent(content);
 
     this.setExpression(expression);
 
+    this.setMaximumDepth(maximumDepth);
+
     this.contentKeyUpHandler();  ///
 
-    this.expressionKeyUpHandler();  ///
+    this.keyUpHandler();  ///
   }
 
   static fromProperties(properties) {

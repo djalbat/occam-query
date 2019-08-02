@@ -8,19 +8,19 @@ const { WILDCARD_CHARACTER } = constants,
       { includes, second, third, fourth, fifth } = arrayUtilities;
 
 class Query {
-  constructor(ruleNames, types, spread, subQuery, infiniteDescent, maximumDepth) {
+  constructor(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent) {
     this.ruleNames = ruleNames;
     this.types = types;
     this.spread = spread;
     this.subQuery = subQuery;
-    this.infiniteDescent = infiniteDescent;
     this.maximumDepth = maximumDepth;
+    this.infiniteDescent = infiniteDescent;
   }
   
-  execute(node, depth = 0) {
+  execute(node, depth = 0, maximumDepth = this.maximumDepth) {
     let nodes = [];
 
-    if (depth <= this.maximumDepth) {
+    if (depth <= maximumDepth) {
       depth++;
 
       const nodeTerminalNode = node.isTerminalNode();
@@ -53,7 +53,7 @@ class Query {
               nodes = [nonTerminalNode];
             } else {
               childNodes.forEach((childNode) => {
-                const childNodeNodes = this.subQuery.execute(childNode, depth);
+                const childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth);
 
                 nodes = nodes.concat(childNodeNodes);
               });
@@ -65,7 +65,7 @@ class Query {
 
         if (this.infiniteDescent) {
           childNodes.forEach((childNode) => {
-            const childNodeNodes = this.execute(childNode, depth);
+            const childNodeNodes = this.execute(childNode, depth, maximumDepth);
 
             nodes = nodes.concat(childNodeNodes);
           });
@@ -100,7 +100,7 @@ class Query {
                        Query.fromExpression(subExpression) :
                          null,
           infiniteDescent = (secondMatch === '/'),  ///
-          query = new Query(ruleNames, types, spread, subQuery, infiniteDescent, maximumDepth);
+          query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent);
     
     return query;
   }

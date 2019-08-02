@@ -42,7 +42,7 @@ Here are some example query expressions and their meaning:
 * `//@end-of-line[1]` matches the second of all terminal nodes of type `end-of-line`.
 * `/*/*` matches all second-level non-terminal nodes, in this case the `declaration` and `verticalSpace` nodes.
 
-In essence, the unadorned parts of paths such as `term` or `declaration` match the rule names of non-terminal nodes, whilst the attribute style parts such as `@end-of-line` match the types of the terminal nodes, which are in fact the types of their underlying significant tokens.
+In essence, the unadorned parts of expressions such as `term` or `declaration` match the rule names of non-terminal nodes, whilst the attribute style parts such as `@end-of-line` match the types of the terminal nodes, which are in fact the types of their underlying significant tokens.
 
 ## Installation
 
@@ -75,7 +75,9 @@ const node = ...,
 
 ...
 ```
-The `maximumDepth` argument is optional, the default is `Infinity`. If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method:
+The `maximumDepth` argument is optional, the default is `Infinity`.
+
+If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method:
 
 ```js
 const dom = require('occam-dom');

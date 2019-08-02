@@ -13,7 +13,7 @@
 
 ## Introduction
 
-This package provides the means to query the document object model return by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers). Consider the following parse tree, essentially the document's stringified DOM:
+This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting nodes from document object models returned by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers). Consider the following parse tree, essentially the document's stringified DOM:
 
 ```
                                                                   document(0-7)

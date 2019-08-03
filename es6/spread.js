@@ -17,6 +17,10 @@ class Spread {
     return between;
   }
 
+  resetIndex() {
+    this.index = 0;
+  }
+
   incrementIndex() {
     this.index += 1;
   }

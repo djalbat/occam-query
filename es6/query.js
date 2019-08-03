@@ -17,8 +17,12 @@ class Query {
     this.infiniteDescent = infiniteDescent;
   }
   
-  execute(node, depth = 0, maximumDepth = this.maximumDepth) {
+  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadIndex = true) {
     let nodes = [];
+
+    if (resetSpreadIndex) {
+      this.spread.resetIndex();
+    }
 
     if (depth <= maximumDepth) {
       depth++;
@@ -34,7 +38,9 @@ class Query {
                 found = includes(this.types, type, WILDCARD_CHARACTER);
 
           if (found) {
-            if (this.spread.isBetween()) {
+            const between = this.spread.isBetween();
+
+            if (between) {
               nodes = [node];
             }
 
@@ -48,7 +54,9 @@ class Query {
               found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
 
         if (found) {
-          if (this.spread.isBetween()) {
+          const between = this.spread.isBetween();
+
+          if (between) {
             if (this.subQuery === null) {
               nodes = [nonTerminalNode];
             } else {
@@ -65,7 +73,8 @@ class Query {
 
         if (this.infiniteDescent) {
           childNodes.forEach((childNode) => {
-            const childNodeNodes = this.execute(childNode, depth, maximumDepth);
+            const resetSpreadIndex = false, ///
+                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadIndex);
 
             nodes = nodes.concat(childNodeNodes);
           });

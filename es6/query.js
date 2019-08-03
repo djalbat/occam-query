@@ -17,11 +17,11 @@ class Query {
     this.infiniteDescent = infiniteDescent;
   }
   
-  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadIndexes = true) {
+  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadsIndexes = true) {
     let nodes = [];
 
-    if (resetSpreadIndexes) {
-      this.resetSpreadIndexes();
+    if (resetSpreadsIndexes) {
+      this.resetSpreadsIndexes();
     }
 
     if (depth <= maximumDepth) {
@@ -61,8 +61,8 @@ class Query {
               nodes = [nonTerminalNode];
             } else {
               childNodes.forEach((childNode) => {
-                const resetSpreadIndexes = false,
-                      childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth, resetSpreadIndexes);
+                const resetSpreadsIndexes = false,
+                      childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth, resetSpreadsIndexes);
 
                 nodes = nodes.concat(childNodeNodes);
               });
@@ -74,8 +74,8 @@ class Query {
 
         if (this.infiniteDescent) {
           childNodes.forEach((childNode) => {
-            const resetSpreadIndexes = false,
-                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadIndexes);
+            const resetSpreadsIndexes = false,
+                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadsIndexes);
 
             nodes = nodes.concat(childNodeNodes);
           });
@@ -86,11 +86,11 @@ class Query {
     return nodes;
   }
 
-  resetSpreadIndexes() {
-    this.spread.resetIndexes();
+  resetSpreadsIndexes() {
+    this.spread.resetIndex();
 
     if (this.subQuery !== null) {
-      this.subQuery.resetSpreadIndexes();
+      this.subQuery.resetSpreadsIndexes();
     }
   }
 

@@ -17,11 +17,11 @@ class Query {
     this.infiniteDescent = infiniteDescent;
   }
   
-  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadIndex = true) {
+  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadIndexes = true) {
     let nodes = [];
 
-    if (resetSpreadIndex) {
-      this.spread.resetIndex();
+    if (resetSpreadIndexes) {
+      this.resetSpreadIndexes();
     }
 
     if (depth <= maximumDepth) {
@@ -61,7 +61,8 @@ class Query {
               nodes = [nonTerminalNode];
             } else {
               childNodes.forEach((childNode) => {
-                const childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth);
+                const resetSpreadIndexes = false,
+                      childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth, resetSpreadIndexes);
 
                 nodes = nodes.concat(childNodeNodes);
               });
@@ -73,8 +74,8 @@ class Query {
 
         if (this.infiniteDescent) {
           childNodes.forEach((childNode) => {
-            const resetSpreadIndex = false, ///
-                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadIndex);
+            const resetSpreadIndexes = false,
+                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadIndexes);
 
             nodes = nodes.concat(childNodeNodes);
           });
@@ -83,6 +84,14 @@ class Query {
     }
 
     return nodes;
+  }
+
+  resetSpreadIndexes() {
+    this.spread.resetIndexes();
+
+    if (this.subQuery !== null) {
+      this.subQuery.resetSpreadIndexes();
+    }
   }
 
   static fromExpression(expression, maximumDepth = Infinity) {

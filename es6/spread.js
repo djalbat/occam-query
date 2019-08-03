@@ -5,10 +5,10 @@ const arrayUtilities = require('./utilities/array');
 const { second, third, fourth } = arrayUtilities;
 
 class Spread {
-  constructor(startIndex, endIndex) {
+  constructor(startIndex, endIndex, index) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
-    this.index = 0;
+    this.index = index;
   }
 
   isBetween() {
@@ -49,7 +49,8 @@ class Spread {
       }
     }
 
-    const spread = new Spread(startIndex, endIndex);
+    const index = 0,
+          spread = new Spread(startIndex, endIndex, index);
 
     return spread;
   }

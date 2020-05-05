@@ -1,28 +1,39 @@
-'use strict';
+"use strict";
 
-const easy = require('easy'),
-      lexers = require('occam-lexers'),
-      parsers = require('occam-parsers'),
-      easyLayout = require('easy-layout');
+import { Element } from "easy";
+import { ColumnsDiv } from "easy-layout";
+import { FlorenceLexer } from "occam-lexers";
+import { FlorenceParser } from "occam-parsers";
 
-const NodesTextarea = require('./textarea/nodes'),
-      queryUtilities = require('../utilities/query'),
-      ExpressionInput = require('./input/expression'),
-      ContentTextarea = require('./textarea/content'),
-      ParseTreeTextarea = require('./textarea/parseTree'),
-      MaximumDepthInput = require('./input/maximumDepth'),
-      MainVerticalSplitter = require('./verticalSplitter/main');
+import Heading from "./heading";
+import ColumnDiv from "./div/column";
+import SubHeading from "./subHeading";
+import SizeableDiv from "./div/sizeable";
+import NodesTextarea from "./textarea/nodes";
+import ExpressionInput from "./input/expression";
+import ContentTextarea from "./textarea/content";
+import MaximumDepthInput from "./input/maximumDepth";
+import ParseTreeTextarea from "./textarea/parseTree";
+import VerticalSplitterDiv from "./div/splitter/vertical";
 
-const { Element } = easy,
-      { FlorenceLexer } = lexers,
-      { FlorenceParser } = parsers,
-      { SizeableElement } = easyLayout,
-      { queryByExpression } = queryUtilities;
+import { queryByExpression } from "../utilities/query";
 
 const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
 
-class View extends Element {
+export default class View extends Element {
+  initialContent = `
+
+Type NaturalNumber
+
+Constructor zero:NaturalNumber
+
+`;
+
+  initialExpression = "//constructorDeclaration/term//@unassigned";
+
+  initialMaximumDepth = 5;
+
   keyUpHandler() {
     try {
       const content = this.getContent(),
@@ -32,76 +43,59 @@ class View extends Element {
             maximumDepth = this.getMaximumDepth(),
             nodes = queryByExpression(node, expression, maximumDepth);
 
-      this.hideError();
-
       this.setNodes(nodes, tokens); ///
     } catch (error) {
-      this.clearNodes();
+      console.log(error);
 
-      this.showError();
+      this.clearNodes();
     }
   }
 
-  contentKeyUpHandler() {
-    const content = this.getContent(),
-          tokens = florenceLexer.tokenise(content),
-          node = florenceParser.parse(tokens),
-          parseTree = (node !== null) ?
-                        node.asParseTree(tokens) :
-                          null;
-
-    this.setParseTree(parseTree);
-  }
-
   childElements(properties) {
-    const contentKeyUpHandler = this.contentKeyUpHandler.bind(this),
-          keyUpHandler = this.keyUpHandler.bind(this);
+    const keyUpHandler = this.keyUpHandler.bind(this);
 
-    return (
+    return ([
 
-      <div className="columns">
-        <SizeableElement>
-          <h2>
+      <Heading>
+        DOM example
+      </Heading>,
+      <ColumnsDiv>
+        <SizeableDiv>
+          <SubHeading>
             Expression
-          </h2>
+          </SubHeading>
           <ExpressionInput onKeyUp={keyUpHandler} />
-          <h2>
+          <SubHeading>
             Maximum depth
-          </h2>
+          </SubHeading>
           <MaximumDepthInput onKeyUp={keyUpHandler} />
-          <h2>
+        </SizeableDiv>
+        <VerticalSplitterDiv />
+        <ColumnDiv>
+          <SubHeading>
             Content
-          </h2>
-          <ContentTextarea onKeyUp={contentKeyUpHandler} />
-        </SizeableElement>
-        <MainVerticalSplitter />
-        <div className="column">
-          <h2>
+          </SubHeading>
+          <ContentTextarea onKeyUp={keyUpHandler} />
+          <SubHeading>
             Parse tree
-          </h2>
+          </SubHeading>
           <ParseTreeTextarea />
-          <h2>
+          <SubHeading>
             Nodes
-          </h2>
+          </SubHeading>
           <NodesTextarea />
-        </div>
-      </div>
+        </ColumnDiv>
+      </ColumnsDiv>
 
-    );
+    ]);
   }
 
-  initialise() {
+  initialise(properties) {
     this.assignContext();
 
-    const content = `
-
-Type NaturalNumber
-
-Constructor zero:NaturalNumber
-  
-`,
-          expression = '//constructorDeclaration/term//@unassigned',
-          maximumDepth = 5;
+    const content = this.initialContent,  ///
+          expression = this.initialExpression,  ///
+          maximumDepth = this.initialMaximumDepth;  ///
 
     this.setContent(content);
 
@@ -109,25 +103,16 @@ Constructor zero:NaturalNumber
 
     this.setMaximumDepth(maximumDepth);
 
-    this.contentKeyUpHandler();  ///
-
     this.keyUpHandler();  ///
   }
 
-  static fromProperties(properties) {
-    const view = Element.fromProperties(View, properties);
+  static tagName = "div";
 
-    view.initialise();
+  static fromClass(Class, properties) {
+    const exampleView = Element.fromClass(Class, properties);
 
-    return view
+    exampleView.initialise(properties);
+
+    return exampleView
   }
 }
-
-Object.assign(View, {
-  tagName: 'div',
-  defaultProperties: {
-    className: 'view'
-  }
-});
-
-module.exports = View;

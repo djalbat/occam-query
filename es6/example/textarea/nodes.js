@@ -1,64 +1,54 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+import Textarea from "../textarea";
 
-const tokenUtilities = require('../../utilities/token');
+import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../../utilities/token"
 
-const { InputElement } = easy,
-      { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } = tokenUtilities;
+export default class NodesTextarea extends Textarea {
+  getNodes() {
+    const value = this.getValue(),
+          nodes = value; ///
 
-class NodesTextarea extends InputElement {
-  setNodes(nodes, tokens) { ///
-    const value = nodes.reduce(function(value, node) {
-            const nodeTerminalNode = node.isTerminalNode();
-
-            if (nodeTerminalNode) {
-              const terminalNode = node,  ///
-                    significantToken = terminalNode.getSignificantToken(),
-                    significantTokenType = significantToken.getType(),
-                    tokenIndex = tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens);
-
-              value = `${value}[${significantTokenType}]${tokenIndex}\n`;
-            } else {
-              const nonTerminalNode = node, ///
-                    ruleName = nonTerminalNode.getRuleName(),
-                    tokenIndexes = tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens);
-
-              value = `${value}${ruleName}${tokenIndexes}\n`;
-            }
-
-            return value;
-          }, '');
-
-    this.setValue(value);
+    return nodes;
   }
 
-  clearNodes() {
-    const value = '';
+  setNodes(nodes, tokens) { ///
+    const value = nodes.reduce(function(value, node) {
+      const nodeTerminalNode = node.isTerminalNode();
+
+      if (nodeTerminalNode) {
+        const terminalNode = node,  ///
+              significantToken = terminalNode.getSignificantToken(),
+              significantTokenType = significantToken.getType(),
+              tokenIndex = tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens);
+
+        value = `${value}[${significantTokenType}]${tokenIndex}\n`;
+      } else {
+        const nonTerminalNode = node, ///
+            ruleName = nonTerminalNode.getRuleName(),
+            tokenIndexes = tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens);
+
+        value = `${value}${ruleName}${tokenIndexes}\n`;
+      }
+
+      return value;
+    }, '');
 
     this.setValue(value);
   }
 
   parentContext() {
-    const setNodes = this.setNodes.bind(this),
-          clearNodes = this.clearNodes.bind(this);
+    const getNodes = this.getNodes.bind(this),
+          setNodes = this.setNodes.bind(this);
 
     return ({
-      setNodes,
-      clearNodes
+      getNodes,
+      setNodes
     });
   }
 
-  static fromProperties(properties) { return InputElement.fromProperties(NodesTextarea, properties); }
+  static defaultProperties = {
+    className: "nodes",
+    spellCheck: "false"
+  };
 }
-
-Object.assign(NodesTextarea, {
-  tagName: 'textarea',
-  defaultProperties: {
-    className: 'nodes',
-    spellCheck: 'false',
-    readOnly: true
-  }
-});
-
-module.exports = NodesTextarea;

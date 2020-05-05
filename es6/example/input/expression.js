@@ -1,54 +1,35 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+import Input from "../input";
 
-const { InputElement } = easy;
-
-class ExpressionInput extends InputElement {
-  showError() {
-    this.addClass('error');
-  }
-
-  hideError() {
-    this.removeClass('error');
-  }
-
+export default class ExpressionInput extends Input {
   getExpression() {
     const value = this.getValue(),
-          expression = value;  ///
+          expression = value; ///
 
     return expression;
   }
 
   setExpression(expression) {
-    const value = expression || '';  ///
+    const value = expression; ///
 
     this.setValue(value);
   }
 
   parentContext() {
-    const showError = this.showError.bind(this), ///
-          hideError = this.hideError.bind(this), ///
-          getExpression = this.getExpression.bind(this),
-          setExpression = this.setExpression.bind(this);
+    const getExpression = this.getExpression.bind(this),
+          setExpression = this.setExpression.bind(this),
+          setExpressionReadOnly = this.setReadOnly.bind(this); ///;
 
     return ({
-      showError,
-      hideError,
       getExpression,
-      setExpression
+      setExpression,
+      setExpressionReadOnly
     });
   }
 
-  static fromProperties(properties) { return InputElement.fromProperties(ExpressionInput, properties); }
+  static defaultProperties = {
+    className: "expression",
+    spellCheck: "false"
+  };
 }
-
-Object.assign(ExpressionInput, {
-  tagName: 'input',
-  defaultProperties: {
-    className: 'expression',
-    spellCheck: 'false'
-  }
-});
-
-module.exports = ExpressionInput;

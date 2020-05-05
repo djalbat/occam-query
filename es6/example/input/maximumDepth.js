@@ -1,10 +1,8 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+import Input from "../input";
 
-const { InputElement } = easy;
-
-class MaximumDepthInput extends InputElement {
+export default class MaximumDepthInput extends Input {
   getMaximumDepth() {
     const value = this.getValue(),
           maximumDepth = Number(value);
@@ -13,29 +11,25 @@ class MaximumDepthInput extends InputElement {
   }
 
   setMaximumDepth(maximumDepth) {
-    const value = maximumDepth || 0;  ///
+    const value = maximumDepth; ///
 
     this.setValue(value);
   }
 
   parentContext() {
     const getMaximumDepth = this.getMaximumDepth.bind(this),
-          setMaximumDepth = this.setMaximumDepth.bind(this);
+        setMaximumDepth = this.setMaximumDepth.bind(this),
+        setMaximumDepthReadOnly = this.setReadOnly.bind(this); ///;
 
     return ({
       getMaximumDepth,
-      setMaximumDepth
+      setMaximumDepth,
+      setMaximumDepthReadOnly
     });
   }
 
-  static fromProperties(properties) { return InputElement.fromProperties(MaximumDepthInput, properties); }
+  static defaultProperties = {
+    className: "maximum-depth",
+    spellCheck: "false"
+  };
 }
-
-Object.assign(MaximumDepthInput, {
-  tagName: 'input',
-  defaultProperties: {
-    className: 'maximum-depth'
-  }
-});
-
-module.exports = MaximumDepthInput;

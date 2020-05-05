@@ -1,19 +1,17 @@
-'use strict';
+"use strict";
 
-const easy = require('easy');
+import Textarea from "../textarea";
 
-const { InputElement } = easy;
-
-class ContentTextarea extends InputElement {
+export default class ContentTextarea extends Textarea {
   getContent() {
     const value = this.getValue(),
-          content = value;  ///
+          content = value; ///
 
     return content;
   }
 
   setContent(content) {
-    const value = content || '';  ///
+    const value = content;
 
     this.setValue(value);
   }
@@ -28,15 +26,8 @@ class ContentTextarea extends InputElement {
     });
   }
 
-  static fromProperties(properties) { return InputElement.fromProperties(ContentTextarea, properties); }
+  static defaultProperties = {
+    className: "content",
+    spellCheck: "false"
+  };
 }
-
-Object.assign(ContentTextarea, {
-  tagName: 'textarea',
-  defaultProperties: {
-    className: 'content',
-    spellCheck: 'false'
-  }
-});
-
-module.exports = ContentTextarea;

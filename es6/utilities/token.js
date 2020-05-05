@@ -1,6 +1,6 @@
 "use strict";
 
-function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
+export function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
   const significantToken = terminalNode.getSignificantToken(),
         significantTokenIndex = tokens.indexOf(significantToken),
         tokenIndex = `(${significantTokenIndex})`;
@@ -8,7 +8,7 @@ function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
   return tokenIndex;
 }
 
-function tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens) {
+export function tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens) {
   let tokenIndexes;
 
   const nonTerminalNodeNullified = nonTerminalNode.isNullified();
@@ -28,8 +28,3 @@ function tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens) {
 
   return tokenIndexes;
 }
-
-module.exports = {
-  tokenIndexFromTerminalNodeAndTokens,
-  tokenIndexesFromNonTerminalNodeAndTokens
-};

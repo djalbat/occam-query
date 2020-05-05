@@ -4,7 +4,7 @@ const arrayUtilities = require("./utilities/array");
 
 const { second, third, fourth } = arrayUtilities;
 
-class Spread {
+export default class Spread {
   constructor(startIndex, endIndex, index) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
@@ -59,5 +59,3 @@ class Spread {
     return spread;
   }
 }
-
-module.exports = Spread;

@@ -5,7 +5,7 @@ import Spread from "./spread";
 import { WILDCARD_CHARACTER } from "./constants";
 import { includes, second, third, fourth, fifth } from "./utilities/array";
 
-class Query {
+export default class Query {
   constructor(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent) {
     this.ruleNames = ruleNames;
     this.types = types;
@@ -121,8 +121,6 @@ class Query {
     return query;
   }
 }
-
-module.exports = Query;
 
 function typesFromSelectors(selectors) {
   const types = [];

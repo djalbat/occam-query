@@ -2,7 +2,7 @@
 
 import Query from "../query";
 
-function queryByClass(node, Class, nodes = []) {
+export function queryByClass(node, Class, nodes = []) {
   if (node instanceof Class) {
     nodes.push(node);
   }
@@ -20,7 +20,7 @@ function queryByClass(node, Class, nodes = []) {
   return nodes;
 }
 
-function queryByClasses(node, Classes, nodes = []) {
+export function queryByClasses(node, Classes, nodes = []) {
   Classes.some(function(Class) {
     if (node instanceof Class) {
       nodes.push(node);
@@ -42,15 +42,9 @@ function queryByClasses(node, Classes, nodes = []) {
   return nodes;
 }
 
-function queryByExpression(node, expression, maximumDepth) {
+export function queryByExpression(node, expression, maximumDepth) {
   const query = Query.fromExpression(expression, maximumDepth),
         nodes = query.execute(node);
 
   return nodes;
 }
-
-module.exports = {
-  queryByClass,
-  queryByClasses,
-  queryByExpression
-};

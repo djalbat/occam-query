@@ -61,14 +61,13 @@ You will need to do this if you want to look at the example.
 
 ## Usage
 
-```js
-const dom = require('occam-dom');
+```
+import { queryUtilities } from "occam-dom";
 
-const { queryUtilities } = dom,
-      { queryByExpression } = queryUtilities;
+const { queryByExpression } = queryUtilities;
 
 const node = ...,
-      expression = '...',
+      expression = "...",
       maximumDepth = 10,
       nodes = queryByExpression(node, expression, maximumDepth);
 
@@ -78,13 +77,11 @@ The `maximumDepth` argument is optional, the default is `Infinity`.
 
 If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method:
 
-```js
-const dom = require('occam-dom');
-
-const { Query } = dom;
+```
+import { Query } from "occam-dom";
 
 const node = ...,
-      expression = '...',
+      expression = "...",
       query = Query.fromExpression(expression)
       nodes = query.execute(node);
 

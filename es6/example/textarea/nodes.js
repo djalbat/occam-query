@@ -37,18 +37,27 @@ export default class NodesTextarea extends Textarea {
     this.setValue(value);
   }
 
+  clearNodes() {
+    const value = "";
+
+    this.setValue(value);
+  }
+
   parentContext() {
     const getNodes = this.getNodes.bind(this),
-          setNodes = this.setNodes.bind(this);
+          setNodes = this.setNodes.bind(this),
+          clearNodes = this.clearNodes.bind(this);
 
     return ({
       getNodes,
-      setNodes
+      setNodes,
+      clearNodes
     });
   }
 
   static defaultProperties = {
     className: "nodes",
-    spellCheck: "false"
+    spellCheck: "false",
+    readOnly: true
   };
 }

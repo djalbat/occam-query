@@ -22,15 +22,12 @@ const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
 
 export default class View extends Element {
-  initialContent = `
-
-Type NaturalNumber
+  initialContent = `Type NaturalNumber
 
 Constructor zero:NaturalNumber
-
 `;
 
-  initialExpression = "//constructorDeclaration/term//@unassigned";
+  initialExpression = "//declaration//@name";
 
   initialMaximumDepth = 5;
 
@@ -39,11 +36,14 @@ Constructor zero:NaturalNumber
       const content = this.getContent(),
             tokens = florenceLexer.tokenise(content),
             node = florenceParser.parse(tokens),
+            parseTree = node.asParseTree(tokens),
             expression = this.getExpression(),
             maximumDepth = this.getMaximumDepth(),
             nodes = queryByExpression(node, expression, maximumDepth);
 
       this.setNodes(nodes, tokens); ///
+
+      this.setParseTree(parseTree);
     } catch (error) {
       console.log(error);
 
@@ -69,6 +69,10 @@ Constructor zero:NaturalNumber
             Maximum depth
           </SubHeading>
           <MaximumDepthInput onKeyUp={keyUpHandler} />
+          <SubHeading>
+            Nodes
+          </SubHeading>
+          <NodesTextarea />
         </SizeableDiv>
         <VerticalSplitterDiv />
         <ColumnDiv>
@@ -80,10 +84,6 @@ Constructor zero:NaturalNumber
             Parse tree
           </SubHeading>
           <ParseTreeTextarea />
-          <SubHeading>
-            Nodes
-          </SubHeading>
-          <NodesTextarea />
         </ColumnDiv>
       </ColumnsDiv>
 

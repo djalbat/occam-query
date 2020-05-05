@@ -1,4 +1,4 @@
-# Custom DOM
+# Occam DOM
 
 [Occam](https://github.com/jecs-imperial/occam)'s DOM related functionality.
 

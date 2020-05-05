@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const Spread = require('./spread'),
-      constants = require('./constants'),
-      arrayUtilities = require('./utilities/array');
+const Spread = require("./spread"),
+      constants = require("./constants"),
+      arrayUtilities = require("./utilities/array");
 
 const { WILDCARD_CHARACTER } = constants,
       { includes, second, third, fourth, fifth } = arrayUtilities;
@@ -105,7 +105,7 @@ class Query {
           thirdMatch = third(matches),
           fourthMatch = fourth(matches),
           fifthMatch = fifth(matches),
-          selectors = thirdMatch.split('|'),  ///
+          selectors = thirdMatch.split("|"),  ///
           spreadExpression = fourthMatch,  ///
           subExpression = fifthMatch,  ///
           types = typesFromSelectors(selectors),
@@ -117,7 +117,7 @@ class Query {
           subQuery = (typesLength === 0) ?
                        Query.fromExpression(subExpression) :
                          null,
-          infiniteDescent = (secondMatch === '/'),  ///
+          infiniteDescent = (secondMatch === "/"),  ///
           query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent);
     
     return query;

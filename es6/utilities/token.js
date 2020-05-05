@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
   const significantToken = terminalNode.getSignificantToken(),
@@ -14,7 +14,7 @@ function tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens) {
   const nonTerminalNodeNullified = nonTerminalNode.isNullified();
 
   if (nonTerminalNodeNullified) {
-    tokenIndexes = '';
+    tokenIndexes = "";
   } else {
     const firstSignificantToken = nonTerminalNode.getFirstSignificantToken(),
           lastSignificantToken = nonTerminalNode.getLastSignificantToken(),

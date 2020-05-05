@@ -13,7 +13,7 @@ export default class NodesTextarea extends Textarea {
   }
 
   setNodes(nodes, tokens) { ///
-    const value = nodes.reduce(function(value, node) {
+    const value = nodes.reduce((value, node) => {
       const nodeTerminalNode = node.isTerminalNode();
 
       if (nodeTerminalNode) {

@@ -12,16 +12,14 @@ export function queryByClass(node, Class, nodes = []) {
   if (nodeNonTerminalNode) {
     const childNodes = node.getChildNodes();
 
-    childNodes.forEach(function(childNode) {
-      queryByClass(childNode, Class, nodes);
-    });
+    childNodes.forEach((childNode) => queryByClass(childNode, Class, nodes));
   }
 
   return nodes;
 }
 
 export function queryByClasses(node, Classes, nodes = []) {
-  Classes.some(function(Class) {
+  Classes.some((Class) => {
     if (node instanceof Class) {
       nodes.push(node);
 
@@ -34,9 +32,7 @@ export function queryByClasses(node, Classes, nodes = []) {
   if (nodeNonTerminalNode) {
     const childNodes = node.getChildNodes();
 
-    childNodes.forEach(function(childNode) {
-      queryByClasses(childNode, Classes, nodes);
-    });
+    childNodes.forEach((childNode) => queryByClasses(childNode, Classes, nodes));
   }
 
   return nodes;

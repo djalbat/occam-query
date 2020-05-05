@@ -125,7 +125,7 @@ export default class Query {
 function typesFromSelectors(selectors) {
   const types = [];
 
-  selectors.forEach(function(selector) {
+  selectors.forEach((selector) => {
     const selectorTypeSelector = isSelectorTypeSelector(selector);
 
     if (selectorTypeSelector) {

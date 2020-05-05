@@ -1,6 +1,6 @@
 "use strict";
 
-const Query = require("../query");
+import Query from "../query";
 
 function queryByClass(node, Class, nodes = []) {
   if (node instanceof Class) {

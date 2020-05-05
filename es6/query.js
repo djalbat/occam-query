@@ -1,11 +1,9 @@
 "use strict";
 
-const Spread = require("./spread"),
-      constants = require("./constants"),
-      arrayUtilities = require("./utilities/array");
+import Spread from "./spread";
 
-const { WILDCARD_CHARACTER } = constants,
-      { includes, second, third, fourth, fifth } = arrayUtilities;
+import { WILDCARD_CHARACTER } from "./constants";
+import { includes, second, third, fourth, fifth } from "./utilities/array";
 
 class Query {
   constructor(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent) {

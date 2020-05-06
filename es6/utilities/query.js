@@ -44,3 +44,9 @@ export function queryByExpression(node, expression, maximumDepth) {
 
   return nodes;
 }
+
+export default {
+  queryByClass,
+  queryByClasses,
+  queryByExpression
+};

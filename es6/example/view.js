@@ -1,9 +1,9 @@
 "use strict";
 
 import { Element } from "easy";
-import { ColumnsDiv } from "easy-layout";
 import { FlorenceLexer } from "occam-lexers";
 import { FlorenceParser } from "occam-parsers";
+import { RowsDiv, ColumnsDiv } from "easy-layout";
 
 import Heading from "./heading";
 import ColumnDiv from "./div/column";
@@ -61,29 +61,33 @@ Constructor zero:NaturalNumber
       </Heading>,
       <ColumnsDiv>
         <SizeableDiv>
-          <SubHeading>
-            Expression
-          </SubHeading>
-          <ExpressionInput onKeyUp={keyUpHandler} />
-          <SubHeading>
-            Maximum depth
-          </SubHeading>
-          <MaximumDepthInput onKeyUp={keyUpHandler} />
-          <SubHeading>
-            Nodes
-          </SubHeading>
-          <NodesTextarea />
+          <RowsDiv>
+            <SubHeading>
+              Expression
+            </SubHeading>
+            <ExpressionInput onKeyUp={keyUpHandler} />
+            <SubHeading>
+              Maximum depth
+            </SubHeading>
+            <MaximumDepthInput onKeyUp={keyUpHandler} />
+            <SubHeading>
+              Nodes
+            </SubHeading>
+            <NodesTextarea />
+          </RowsDiv>
         </SizeableDiv>
         <VerticalSplitterDiv />
         <ColumnDiv>
-          <SubHeading>
-            Content
-          </SubHeading>
-          <ContentTextarea onKeyUp={keyUpHandler} />
-          <SubHeading>
-            Parse tree
-          </SubHeading>
-          <ParseTreeTextarea />
+          <RowsDiv>
+            <SubHeading>
+              Content
+            </SubHeading>
+            <ContentTextarea onKeyUp={keyUpHandler} />
+            <SubHeading>
+              Parse tree
+            </SubHeading>
+            <ParseTreeTextarea />
+          </RowsDiv>
         </ColumnDiv>
       </ColumnsDiv>
 

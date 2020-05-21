@@ -1,8 +1,6 @@
 "use strict";
 
-const arrayUtilities = require("./utilities/array");
-
-const { second, third, fourth } = arrayUtilities;
+import { second, third, fourth } from "./utilities/array";
 
 export default class Spread {
   constructor(startIndex, endIndex, index) {

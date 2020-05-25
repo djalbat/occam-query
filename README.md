@@ -95,7 +95,7 @@ This is quicker than using the `queryByExpression()` function, which will create
 
 There is one example with a given DOM and starting query expression. To view it, open the `example.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree; the expression, which will update the selected nodes; or the maximum depth, which will also affect the selected nodes.
 
-## Compiling from source
+## Building
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
 

@@ -61,6 +61,8 @@ You will need to do this if you want to look at the example.
 
 ## Usage
 
+The collection of query utility functions is exported as a plain old JavaScript object. The only one of use is the `queryByExpression(...)` function:
+
 ```
 import { queryUtilities } from "occam-dom";
 
@@ -75,7 +77,7 @@ const node = ...,
 ```
 The `maximumDepth` argument is optional, the default is `Infinity`.
 
-If you are going to repeatedly use the same query expression, build a `query` object and make use of its `execute()` method:
+If repeatedly using the same query expression, build a `query` object and make use of its `execute(...)` method:
 
 ```
 import { Query } from "occam-dom";
@@ -93,7 +95,7 @@ This is quicker than using the `queryByExpression()` function, which will create
 
 There is one example with a given DOM and starting query expression. To view it, open the `example.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree; the expression, which will update the selected nodes; or the maximum depth, which will also affect the selected nodes.
 
-## Building
+## Compiling from source
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
 

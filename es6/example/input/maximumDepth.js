@@ -18,8 +18,8 @@ export default class MaximumDepthInput extends Input {
 
   parentContext() {
     const getMaximumDepth = this.getMaximumDepth.bind(this),
-        setMaximumDepth = this.setMaximumDepth.bind(this),
-        setMaximumDepthReadOnly = this.setReadOnly.bind(this); ///;
+          setMaximumDepth = this.setMaximumDepth.bind(this),
+          setMaximumDepthReadOnly = this.setReadOnly.bind(this); ///;
 
     return ({
       getMaximumDepth,

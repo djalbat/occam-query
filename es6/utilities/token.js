@@ -2,7 +2,7 @@
 
 export function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
   const significantToken = terminalNode.getSignificantToken(),
-        significantTokenIndex = tokens.indexOf(significantToken),
+        significantTokenIndex = significantToken.ofIndex(tokens),
         tokenIndex = `(${significantTokenIndex})`;
 
   return tokenIndex;
@@ -11,8 +11,8 @@ export function tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens) {
 export function tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens) {
   const firstSignificantToken = nonTerminalNode.getFirstSignificantToken(),
         lastSignificantToken = nonTerminalNode.getLastSignificantToken(),
-        firstSignificantTokenIndex = tokens.indexOf(firstSignificantToken),
-        lastSignificantTokenIndex = tokens.indexOf(lastSignificantToken),
+        firstSignificantTokenIndex = firstSignificantToken.ofIndex(tokens),
+        lastSignificantTokenIndex = lastSignificantToken.ofIndex(tokens),
         tokenIndexes = (firstSignificantTokenIndex !== lastSignificantTokenIndex) ?
                         `(${firstSignificantTokenIndex}-${lastSignificantTokenIndex})` :
                           `(${firstSignificantTokenIndex})`;

@@ -2,6 +2,7 @@
 
 import { Element } from "easy";
 import { FlorenceLexer } from "occam-lexers";
+import { queryUtilities } from "../index";  ///
 import { FlorenceParser } from "occam-parsers";
 import { RowsDiv, ColumnsDiv } from "easy-layout";
 
@@ -16,10 +17,10 @@ import MaximumDepthInput from "./input/maximumDepth";
 import ParseTreeTextarea from "./textarea/parseTree";
 import VerticalSplitterDiv from "./div/splitter/vertical";
 
-import { queryByExpression } from "../utilities/query";
-
 const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
+
+const { queryByExpression } = queryUtilities;
 
 export default class View extends Element {
   initialContent = `Type NaturalNumber

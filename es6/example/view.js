@@ -52,7 +52,7 @@ Constructor zero:NaturalNumber
     }
   }
 
-  childElements(properties) {
+  childElements() {
     const keyUpHandler = this.keyUpHandler.bind(this);
 
     return ([
@@ -95,7 +95,7 @@ Constructor zero:NaturalNumber
     ]);
   }
 
-  initialise(properties) {
+  initialise() {
     this.assignContext();
 
     const content = this.initialContent,  ///
@@ -116,7 +116,7 @@ Constructor zero:NaturalNumber
   static fromClass(Class, properties) {
     const exampleView = Element.fromClass(Class, properties);
 
-    exampleView.initialise(properties);
+    exampleView.initialise();
 
     return exampleView
   }

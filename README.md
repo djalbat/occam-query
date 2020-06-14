@@ -93,7 +93,7 @@ This is quicker than using the `queryByExpression()` function, which will create
 
 ## Example
 
-There is one example with a given DOM and starting query expression. To view it, open the `example.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree; the expression, which will update the selected nodes; or the maximum depth, which will also affect the selected nodes.
+There is one example with a given DOM and starting query expression. To view it, open the `index.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree; the expression, which will update the selected nodes; or the maximum depth, which will also affect the selected nodes.
 
 ## Building
 
@@ -101,6 +101,12 @@ Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have
 
     npm run build-debug
     npm run watch-debug
+
+You can also start a small development server:
+
+    npm start
+
+The example will then be available at http://localhost:8888/ and will reload automatically when changes are made.
 
 ## Contact
 

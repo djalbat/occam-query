@@ -1,7 +1,7 @@
 {
   "name": "occam-dom",
   "author": "James Smith",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/jecs-imperial/occam-dom",
   "description": "Occam's DOM related functionality.",
@@ -24,8 +24,8 @@
     "easy-with-style": "^3.0.10",
     "express": "^4.17.1",
     "juxtapose": "^3.0.2",
-    "occam-lexers": "^12.0.3",
-    "occam-parsers": "^12.0.10",
+    "occam-lexers": "^12.0.5",
+    "occam-parsers": "^12.0.13",
     "lively-cli": "^1.1.17",
     "watchful-cli": "^1.4.6"
   },

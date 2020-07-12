@@ -1,9 +1,9 @@
 "use strict";
 
 import { Element } from "easy";
-import { FlorenceLexer } from "occam-lexers";
+import { FlorenceLexer } from "occam-grammars";
+import { FlorenceParser } from "occam-grammars";
 import { queryUtilities } from "../index";  ///
-import { FlorenceParser } from "occam-parsers";
 import { RowsDiv, ColumnsDiv } from "easy-layout";
 
 import Heading from "./heading";

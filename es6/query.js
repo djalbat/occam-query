@@ -92,6 +92,20 @@ export default class Query {
     }
   }
 
+  static fromSubExpressionAndTypes(subExpresion, types) {
+    let query = null;
+
+    const typesLength = types.length;
+
+    if (typesLength === 0) {
+      const expression = subExpresion;  ///
+
+      query = Query.fromExpression(expression);
+    }
+
+    return query;
+  }
+
   static fromExpression(expression, maximumDepth = Infinity) {
     if (expression === undefined) { ///
       return null;
@@ -107,14 +121,9 @@ export default class Query {
           spreadExpression = fourthMatch,  ///
           subExpression = fifthMatch,  ///
           types = typesFromSelectors(selectors),
-          typesLength = types.length,
-          ruleNames = (typesLength === 0) ?
-                        ruleNamesFromSelectors(selectors) :
-                          [],
-          spread = Spread.fromExpression(spreadExpression),
-          subQuery = (typesLength === 0) ?
-                       Query.fromExpression(subExpression) :
-                         null,
+          ruleNames = ruleNamesFromSelectorsAndTypes(selectors, types),
+          spread = Spread.fromSpreadExpression(spreadExpression),
+          subQuery = Query.fromSubExpressionAndTypes(subExpression, types),
           infiniteDescent = (secondMatch === "/"),  ///
           query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent);
     
@@ -143,3 +152,15 @@ function isSelectorTypeSelector(selector) { return /^@/.test(selector); }
 function ruleNamesFromSelectors(selectors) { return selectors.filter(isSelectorRuleNameSelector); }
 
 function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }
+
+function ruleNamesFromSelectorsAndTypes(selectors, types) {
+  let ruleNames = [];
+
+  const typesLength = types.length;
+
+  if (typesLength === 0) {
+    ruleNames = ruleNamesFromSelectors(selectors);
+  }
+
+  return ruleNames;
+}

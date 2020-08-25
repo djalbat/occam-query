@@ -23,13 +23,13 @@ export default class Spread {
     this.index += 1;
   }
 
-  static fromExpression(expression) {
+  static fromSpreadExpression(spreadExpression) {
     let startIndex = -1,
         endIndex = Number.POSITIVE_INFINITY;
 
-    if (expression) {
+    if (spreadExpression) {
       const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
-            matches = expression.match(regExp),
+            matches = spreadExpression.match(regExp),
             secondMatch = second(matches),
             thirdMatch = third(matches),
             fourthMatch = fourth(matches);

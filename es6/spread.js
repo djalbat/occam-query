@@ -1,11 +1,13 @@
 "use strict";
 
 import { second, third, fourth } from "./utilities/array";
+import { UNIQUE_SPREAD_EXPRESSION } from "./constants";
 
 export default class Spread {
-  constructor(startIndex, endIndex, index) {
+  constructor(startIndex, endIndex, unique, index) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
+    this.unique = unique;
     this.index = index;
   }
 
@@ -25,34 +27,39 @@ export default class Spread {
 
   static fromSpreadExpression(spreadExpression) {
     let startIndex = -1,
-        endIndex = Number.POSITIVE_INFINITY;
+        endIndex = Number.POSITIVE_INFINITY,
+        unique = false;
 
     if (spreadExpression) {
-      const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
-            matches = spreadExpression.match(regExp),
-            secondMatch = second(matches),
-            thirdMatch = third(matches),
-            fourthMatch = fourth(matches);
+      if (spreadExpression === UNIQUE_SPREAD_EXPRESSION) {
+        unique = true;
+      } else {
+        const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
+              matches = spreadExpression.match(regExp),
+              secondMatch = second(matches),
+              thirdMatch = third(matches),
+              fourthMatch = fourth(matches);
 
-      if (secondMatch !== undefined) {
-        startIndex = parseInt(secondMatch);
+        if (secondMatch !== undefined) {
+          startIndex = parseInt(secondMatch);
 
-        if (thirdMatch === undefined) {
-          endIndex = startIndex;
+          if (thirdMatch === undefined) {
+            endIndex = startIndex;
+          }
         }
-      }
 
-      if (fourthMatch !== undefined) {
-        endIndex = parseInt(fourthMatch);
+        if (fourthMatch !== undefined) {
+          endIndex = parseInt(fourthMatch);
 
-        if (thirdMatch === undefined) {
-          startIndex = endIndex;
+          if (thirdMatch === undefined) {
+            startIndex = endIndex;
+          }
         }
       }
     }
 
     const index = 0,
-          spread = new Spread(startIndex, endIndex, index);
+          spread = new Spread(startIndex, endIndex, unique, index);
 
     return spread;
   }

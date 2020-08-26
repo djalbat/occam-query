@@ -111,7 +111,7 @@ export default class Query {
       return null;
     }
     
-    const regExp = /^\/(\/)?([^/\[]+)(\[[^\]]+])?(\/.*)?$/,
+    const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
           matches = expression.match(regExp),
           secondMatch = second(matches),
           thirdMatch = third(matches),

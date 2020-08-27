@@ -3,129 +3,161 @@
 import Spread from "./spread";
 
 import { WILDCARD_CHARACTER } from "./constants";
-import { includes, second, third, fourth, fifth } from "./utilities/array";
+import { includes, push, clear, second, third, fourth, fifth } from "./utilities/array";
 
 export default class Query {
-  constructor(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent) {
+  constructor(ruleNames, types, spread, subQuery,  maximumDepth, infiniteDescent, intermediateNodes) {
     this.ruleNames = ruleNames;
     this.types = types;
     this.spread = spread;
     this.subQuery = subQuery;
     this.maximumDepth = maximumDepth;
     this.infiniteDescent = infiniteDescent;
+    this.intermediateNodes = intermediateNodes;
   }
+
+  isUnique() { return this.spread.isUnique(); }
   
-  execute(node, depth = 0, maximumDepth = this.maximumDepth, resetSpreadsIndexes = true) {
-    let nodes = [];
+  execute(node, depth = 0, maximumDepth = this.maximumDepth) {
+    const nodes = [];
 
-    if (resetSpreadsIndexes) {
-      this.resetSpreadsIndexes();
-    }
+    this.reset();
 
-    if (depth <= maximumDepth) {
-      depth++;
+    this.clear();
 
-      const nodeTerminalNode = node.isTerminalNode();
+    this.find(node, depth, maximumDepth);
 
-      if (nodeTerminalNode) {
-        const terminalNode = node,  ///
-              terminalNodeEpsilonNode = terminalNode.isEpsilonNode();
-
-        if (!terminalNodeEpsilonNode) {
-          const type = terminalNode.getType(),
-                found = includes(this.types, type, WILDCARD_CHARACTER);
-
-          if (found) {
-            const between = this.spread.isBetween();
-
-            if (between) {
-              nodes = [node];
-            }
-
-            this.spread.incrementIndex();
-          }
-        }
-      } else {
-        const nonTerminalNode = node, ///
-              childNodes = nonTerminalNode.getChildNodes(),
-              ruleName = nonTerminalNode.getRuleName(),
-              found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
-
-        if (found) {
-          const between = this.spread.isBetween();
-
-          if (between) {
-            if (this.subQuery === null) {
-              nodes = [nonTerminalNode];
-            } else {
-              childNodes.forEach((childNode) => {
-                const resetSpreadsIndexes = false,
-                      childNodeNodes = this.subQuery.execute(childNode, depth, maximumDepth, resetSpreadsIndexes);
-
-                nodes = nodes.concat(childNodeNodes);
-              });
-            }
-          }
-
-          this.spread.incrementIndex();
-        }
-
-        if (this.infiniteDescent) {
-          childNodes.forEach((childNode) => {
-            const resetSpreadsIndexes = false,
-                  childNodeNodes = this.execute(childNode, depth, maximumDepth, resetSpreadsIndexes);
-
-            nodes = nodes.concat(childNodeNodes);
-          });
-        }
-      }
-    }
+    this.apply(nodes, depth, maximumDepth);
 
     return nodes;
   }
 
-  resetSpreadsIndexes() {
-    this.spread.resetIndex();
+  reset() {
+    this.spread.reset();
 
     if (this.subQuery !== null) {
-      this.subQuery.resetSpreadsIndexes();
+      this.subQuery.reset();
+    }
+  }
+
+  clear() {
+    clear(this.intermediateNodes);
+  }
+
+  find(node, depth, maximumDepth) {
+    if (depth > maximumDepth) {
+      return;
+    }
+
+    const nodeTerminalNode = node.isTerminalNode(),
+          nodeNonTerminalNode = !nodeTerminalNode;
+
+    let found;
+
+    if (nodeTerminalNode) {
+      const terminalNode = node,  ///
+            type = terminalNode.getType();
+
+      found = includes(this.types, type, WILDCARD_CHARACTER);
+    }
+
+    if (nodeNonTerminalNode) {
+      const nonTerminalNode = node, ///
+            ruleName = nonTerminalNode.getRuleName();
+
+      found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
+    }
+
+    if (found) {
+      const between = this.spread.isBetween();
+
+      if (between) {
+        const intermediateNode = node; ///
+
+        this.intermediateNodes.push(intermediateNode);
+      }
+
+      this.spread.incrementIndex();
+    }
+
+    if (this.infiniteDescent) {
+      if (nodeNonTerminalNode) {
+        depth++;
+
+        const nonTerminalNode = node, ///
+              childNodes = nonTerminalNode.getChildNodes();
+
+        childNodes.forEach((childNode) => this.find(childNode, depth, maximumDepth));
+      }
+    }
+  }
+
+  apply(nodes, depth, maximumDepth) {
+    const unique = this.isUnique();
+
+    if (unique) {
+      const intermediateNodesLength = this.intermediateNodes.length;
+
+      if (intermediateNodesLength > 1) {
+        this.clear();
+      }
+    }
+
+    if (this.subQuery === null) {
+      push(nodes, this.intermediateNodes);
+    } else {
+      this.intermediateNodes.forEach((intermediateNode) => {
+        const intermediateNodeNonTerminalNode = intermediateNode.isNonTerminalNode();
+
+        if (intermediateNodeNonTerminalNode) {
+          depth++;
+
+          const nonTerminalNode = intermediateNode, ///
+                childNodes = nonTerminalNode.getChildNodes();
+
+          this.subQuery.clear();
+
+          childNodes.forEach((childNode) => this.subQuery.find(childNode, depth, maximumDepth));
+
+          this.subQuery.apply(nodes, depth, maximumDepth);
+        }
+      });
     }
   }
 
   static fromSubExpressionAndTypes(subExpresion, types) {
     let query = null;
 
-    const typesLength = types.length;
+    if (subExpresion !== null) {
+      const typesLength = types.length;
 
-    if (typesLength === 0) {
-      const expression = subExpresion;  ///
+      if (typesLength === 0) {
+        const expression = subExpresion;  ///
 
-      query = Query.fromExpression(expression);
+        query = Query.fromExpression(expression);
+      }
     }
 
     return query;
   }
 
   static fromExpression(expression, maximumDepth = Infinity) {
-    if (expression === undefined) { ///
-      return null;
-    }
-    
     const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
           matches = expression.match(regExp),
           secondMatch = second(matches),
           thirdMatch = third(matches),
           fourthMatch = fourth(matches),
           fifthMatch = fifth(matches),
-          selectors = thirdMatch.split("|"),  ///
-          spreadExpression = fourthMatch,  ///
-          subExpression = fifthMatch,  ///
+          selectors = thirdMatch.split("|"),
+          subExpression = fifthMatch || null,
+          spreadExpression = fourthMatch || null,
           types = typesFromSelectors(selectors),
           ruleNames = ruleNamesFromSelectorsAndTypes(selectors, types),
           spread = Spread.fromSpreadExpression(spreadExpression),
           subQuery = Query.fromSubExpressionAndTypes(subExpression, types),
           infiniteDescent = (secondMatch === "/"),  ///
-          query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent);
+          intermediateNodes = [],
+          query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent, intermediateNodes);
     
     return query;
   }

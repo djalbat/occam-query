@@ -11,13 +11,17 @@ export default class Spread {
     this.index = index;
   }
 
+  isUnique() {
+    return this.unique;
+  }
+
   isBetween() {
     const between = ((this.index >= this.startIndex) && (this.index <= this.endIndex));
 
     return between;
   }
 
-  resetIndex() {
+  reset() {
     this.index = 0;
   }
 
@@ -27,10 +31,10 @@ export default class Spread {
 
   static fromSpreadExpression(spreadExpression) {
     let startIndex = -1,
-        endIndex = Number.POSITIVE_INFINITY,
+        endIndex = Infinity,
         unique = false;
 
-    if (spreadExpression) {
+    if (spreadExpression !== null) {
       if (spreadExpression === UNIQUE_SPREAD_EXPRESSION) {
         unique = true;
       } else {

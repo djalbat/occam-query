@@ -2,7 +2,7 @@
 
 import { arrayUtilities } from "necessary";
 
-export const { second, third, fourth, fifth } = arrayUtilities;
+export const { clear, push, second, third, fourth, fifth } = arrayUtilities;
 
 export function includes(array, ...elements) {
   return elements.some((element) => array.includes(element));

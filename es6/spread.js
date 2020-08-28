@@ -1,36 +1,29 @@
 "use strict";
 
-import { second, third, fourth } from "./utilities/array";
+import { clear, trim, second, third, fourth } from "./utilities/array";
 import { UNIQUE_SPREAD_EXPRESSION } from "./constants";
 
 export default class Spread {
-  constructor(startIndex, endIndex, unique, index) {
+  constructor(startIndex, endIndex, unique) {
     this.startIndex = startIndex;
     this.endIndex = endIndex;
     this.unique = unique;
-    this.index = index;
   }
 
-  isUnique() {
-    return this.unique;
-  }
+  adjustNodes(nodes) {
+    if (this.unique) {
+      const nodesLength = nodes.length;
 
-  isBetween() {
-    const between = ((this.index >= this.startIndex) && (this.index <= this.endIndex));
-
-    return between;
-  }
-
-  reset() {
-    this.index = 0;
-  }
-
-  incrementIndex() {
-    this.index += 1;
+      if (nodesLength > 1) {
+        clear(nodes);
+      }
+    } else {
+      trim(nodes, this.startIndex, this.endIndex);
+    }
   }
 
   static fromSpreadExpression(spreadExpression) {
-    let startIndex = -1,
+    let startIndex = 0,
         endIndex = Infinity,
         unique = false;
 
@@ -62,8 +55,7 @@ export default class Spread {
       }
     }
 
-    const index = 0,
-          spread = new Spread(startIndex, endIndex, unique, index);
+    const spread = new Spread(startIndex, endIndex, unique);
 
     return spread;
   }

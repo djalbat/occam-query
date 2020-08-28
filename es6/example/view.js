@@ -28,7 +28,7 @@ export default class View extends Element {
 Constructor zero:NaturalNumber
 `;
 
-  initialExpression = "//constructorDeclaration//@name";
+  initialExpression = "//declaration//@name";
 
   initialMaximumDepth = 5;
 

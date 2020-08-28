@@ -16,12 +16,8 @@ export default class Query {
     this.intermediateNodes = intermediateNodes;
   }
 
-  isUnique() { return this.spread.isUnique(); }
-  
   execute(node, depth = 0, maximumDepth = this.maximumDepth) {
     const nodes = [];
-
-    this.reset();
 
     this.clear();
 
@@ -30,14 +26,6 @@ export default class Query {
     this.apply(nodes, depth, maximumDepth);
 
     return nodes;
-  }
-
-  reset() {
-    this.spread.reset();
-
-    if (this.subQuery !== null) {
-      this.subQuery.reset();
-    }
   }
 
   clear() {
@@ -69,15 +57,9 @@ export default class Query {
     }
 
     if (found) {
-      const between = this.spread.isBetween();
+      const intermediateNode = node; ///
 
-      if (between) {
-        const intermediateNode = node; ///
-
-        this.intermediateNodes.push(intermediateNode);
-      }
-
-      this.spread.incrementIndex();
+      this.intermediateNodes.push(intermediateNode);
     }
 
     if (this.infiniteDescent) {
@@ -93,15 +75,7 @@ export default class Query {
   }
 
   apply(nodes, depth, maximumDepth) {
-    const unique = this.isUnique();
-
-    if (unique) {
-      const intermediateNodesLength = this.intermediateNodes.length;
-
-      if (intermediateNodesLength > 1) {
-        this.clear();
-      }
-    }
+    this.spread.adjustNodes(this.intermediateNodes);
 
     if (this.subQuery === null) {
       push(nodes, this.intermediateNodes);

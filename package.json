@@ -1,7 +1,7 @@
 {
   "name": "occam-dom",
   "author": "James Smith",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/jecs-imperial/occam-dom",
   "description": "Occam's DOM related functionality.",
@@ -18,7 +18,6 @@
     "@babel/plugin-transform-react-jsx": "^7.8.3",
     "@babel/preset-env": "^7.11.0",
     "browserify": "^16.5.1",
-    "concurrently": "^5.2.0",
     "easy": "^11.1.7",
     "easy-layout": "^5.0.15",
     "easy-with-style": "^3.0.18",
@@ -31,7 +30,6 @@
   "scripts": {
     "start": "node ./bin/main.js",
     "clean": "rm -rf ./lib",
-    "lively": "lively --port=3333 --watch-pattern=./example.js --allowed-origin=http://localhost:8888",
     "watchful": "watchful --source-directory=./es6 --temp-directory=./lib --entry-file=example.js --bundle-file=./example.js --pause=100",
     "batch": "npm run watchful batch --",
     "batch-debug": "npm run watchful batch -- --debug",
@@ -39,8 +37,8 @@
     "incremental-debug": "npm run watchful incremental -- --debug",
     "build": "npm run clean && npm run batch",
     "build-debug": "npm run clean && npm run batch-debug",
-    "watch": "npm run clean && npm run batch && concurrently -k 'npm run incremental' 'npm run lively'",
-    "watch-debug": "npm run clean && npm run batch-debug && concurrently -k 'npm run incremental-debug' 'npm run lively'"
+    "watch": "npm run clean && npm run batch npm run incremental",
+    "watch-debug": "npm run clean && npm run batch-debug && npm run incremental-debug"
   },
   "main": "./lib/index.js"
 }

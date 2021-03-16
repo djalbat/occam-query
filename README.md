@@ -1,6 +1,6 @@
 # Occam DOM
 
-[Occam](https://github.com/jecs-imperial/occam)'s DOM related functionality.
+[Occam](https://github.com/djalbat/occam)'s DOM related functionality.
 
 ### Contents
 
@@ -13,7 +13,7 @@
 
 ## Introduction
 
-This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting nodes from document object models returned by Occam's [parsers](https://github.com/jecs-imperial/occam-parsers).
+This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting nodes from document object models returned by Occam's [parsers](https://github.com/djalbat/occam-parsers).
 
 A query expression consists of a leading, forward slash `/` followed by an optional forward slash to signify arbitrary depth, followed by a list of either non-terminal node rule names or terminal node significant token types, finally followed by an optional spread expression and a sub-query. You cannot mix rule names and significant token types and the sub-queries of query expressions with significant token types are ignored. Further explanation would likely just confuse. It is best simply to play around with the expression in the example to select different nodes.
 
@@ -51,7 +51,7 @@ With [npm](https://www.npmjs.com/):
 
 You can also clone the repository with [Git](https://git-scm.com/)...
 
-    git clone https://github.com/jecs-imperial/occam-dom.git
+    git clone https://github.com/djalbat/occam-dom.git
 
 ...and then install the dependencies with npm from within the project's root directory:
 
@@ -110,5 +110,5 @@ The example will then be available at http://localhost:8888/ and will reload aut
 
 ## Contact
 
-* james.smith@openmathematics.org
+* james.smith@djalbat.com
 * http://djalbat.com

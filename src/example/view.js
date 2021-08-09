@@ -112,12 +112,4 @@ Constructor zero:NaturalNumber
   }
 
   static tagName = "div";
-
-  static fromClass(Class, properties) {
-    const exampleView = Element.fromClass(Class, properties);
-
-    exampleView.initialise();
-
-    return exampleView
-  }
 }

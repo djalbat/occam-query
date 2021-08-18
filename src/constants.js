@@ -1,4 +1,5 @@
 "use strict";
 
-export const UNIQUE_SPREAD_EXPRESSION = "!";
-export const WILDCARD_CHARACTER = "*";
+export const WILDCARD = "*";
+export const EMPTY_STRING = "";
+export const EXCLAMATION_MARK = "!";

@@ -2,7 +2,7 @@
 
 import Spread from "./spread";
 
-import { WILDCARD_CHARACTER } from "./constants";
+import { WILDCARD } from "./constants";
 import { includes, push, clear, second, third, fourth, fifth } from "./utilities/array";
 
 export default class Query {
@@ -46,14 +46,14 @@ export default class Query {
       const terminalNode = node,  ///
             type = terminalNode.getType();
 
-      found = includes(this.types, type, WILDCARD_CHARACTER);
+      found = includes(this.types, type, WILDCARD);
     }
 
     if (nodeNonTerminalNode) {
       const nonTerminalNode = node, ///
             ruleName = nonTerminalNode.getRuleName();
 
-      found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
+      found = includes(this.ruleNames, ruleName, WILDCARD);
     }
 
     if (found) {

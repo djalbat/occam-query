@@ -4,10 +4,9 @@ import { Element } from "easy";
 import { FlorenceLexer } from "occam-grammars";
 import { FlorenceParser } from "occam-grammars";
 import { queryUtilities } from "../index";  ///
-import { RowsDiv, ColumnsDiv } from "easy-layout";
+import { RowsDiv, ColumnDiv } from "easy-layout";
 
-import Heading from "./heading";
-import ColumnDiv from "./div/column";
+import ColumnsDiv from "./div/columns";
 import SubHeading from "./subHeading";
 import SizeableDiv from "./div/sizeable";
 import NodesTextarea from "./textarea/nodes";
@@ -57,9 +56,6 @@ Constructor zero:NaturalNumber
 
     return ([
 
-      <Heading>
-        DOM example
-      </Heading>,
       <ColumnsDiv>
         <SizeableDiv>
           <RowsDiv>

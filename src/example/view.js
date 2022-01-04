@@ -1,12 +1,13 @@
 "use strict";
 
+import withStyle from "easy-with-style";  ///
+
 import { Element } from "easy";
 import { FlorenceLexer } from "occam-grammars";
 import { FlorenceParser } from "occam-grammars";
 import { queryUtilities } from "../index";  ///
-import { RowsDiv, ColumnDiv } from "easy-layout";
+import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
-import ColumnsDiv from "./div/columns";
 import SubHeading from "./subHeading";
 import SizeableDiv from "./div/sizeable";
 import NodesTextarea from "./textarea/nodes";
@@ -14,14 +15,13 @@ import ExpressionInput from "./input/expression";
 import ContentTextarea from "./textarea/content";
 import MaximumDepthInput from "./input/maximumDepth";
 import ParseTreeTextarea from "./textarea/parseTree";
-import VerticalSplitterDiv from "./div/splitter/vertical";
 
 const florenceLexer = FlorenceLexer.fromNothing(),
       florenceParser = FlorenceParser.fromNothing();
 
 const { queryByExpression } = queryUtilities;
 
-export default class View extends Element {
+class View extends Element {
   initialContent = `Type NaturalNumber
 
 Constructor zero:NaturalNumber
@@ -108,4 +108,14 @@ Constructor zero:NaturalNumber
   }
 
   static tagName = "div";
+
+  static defaultProperties = {
+    className: "view"
+  };
 }
+
+export default withStyle(View)`
+
+  padding: 1rem;
+  
+`;

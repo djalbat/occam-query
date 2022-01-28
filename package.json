@@ -1,7 +1,7 @@
 {
   "name": "occam-dom",
   "author": "James Smith",
-  "version": "3.0.86",
+  "version": "3.0.87",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/djalbat/occam-dom",
   "description": "Occam's DOM related functionality.",
@@ -14,12 +14,12 @@
   },
   "devDependencies": {
     "@swc/core": "^1.2.50",
-    "easy": "^13.0.26",
-    "easy-layout": "^5.0.82",
-    "easy-with-style": "^3.0.95",
+    "easy": "^13.0.33",
+    "easy-layout": "^5.0.85",
+    "easy-with-style": "^3.0.97",
     "esbuild": "^0.9.2",
     "express": "^4.17.1",
-    "juxtapose": "^4.0.36",
+    "juxtapose": "^4.0.37",
     "lively-cli": "^2.0.26",
     "occam-grammars": "^1.0.117",
     "watchful-cli": "^1.7.13"

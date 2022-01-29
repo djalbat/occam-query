@@ -1,7 +1,10 @@
 "use strict";
 
-import { EXCLAMATION_MARK } from "./constants";
+import { characters } from "necessary";
+
 import { clear, trim, second, third, fourth } from "./utilities/array";
+
+const { EXCLAMATION_MARK_CHARACTER } = characters;
 
 export default class Spread {
   constructor(startIndex, endIndex, unique) {
@@ -28,7 +31,7 @@ export default class Spread {
         unique = false;
 
     if (spreadExpression !== null) {
-      if (spreadExpression === EXCLAMATION_MARK) {
+      if (spreadExpression === EXCLAMATION_MARK_CHARACTER) {
         unique = true;
       } else {
         const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,

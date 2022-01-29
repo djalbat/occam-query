@@ -1,9 +1,12 @@
 "use strict";
 
+import { characters } from "necessary";
+
 import Spread from "./spread";
 
-import { WILDCARD } from "./constants";
 import { includes, push, clear, second, third, fourth, fifth } from "./utilities/array";
+
+const { WILDCARD_CHARACTER } = characters;
 
 export default class Query {
   constructor(ruleNames, types, spread, subQuery,  maximumDepth, infiniteDescent, intermediateNodes) {
@@ -46,14 +49,14 @@ export default class Query {
       const terminalNode = node,  ///
             type = terminalNode.getType();
 
-      found = includes(this.types, type, WILDCARD);
+      found = includes(this.types, type, WILDCARD_CHARACTER);
     }
 
     if (nodeNonTerminalNode) {
       const nonTerminalNode = node, ///
             ruleName = nonTerminalNode.getRuleName();
 
-      found = includes(this.ruleNames, ruleName, WILDCARD);
+      found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
     }
 
     if (found) {

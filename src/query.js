@@ -102,14 +102,14 @@ export default class Query {
     }
   }
 
-  static fromSubExpressionAndTypes(subExpresion, types) {
+  static fromSubExpressionAndTypes(subExpression, types) {
     let query = null;
 
-    if (subExpresion !== null) {
+    if (subExpression !== null) {
       const typesLength = types.length;
 
       if (typesLength === 0) {
-        const expression = subExpresion;  ///
+        const expression = subExpression;  ///
 
         query = Query.fromExpression(expression);
       }

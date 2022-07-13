@@ -128,8 +128,8 @@ export default class Query {
           selectors = thirdMatch.split(BAR_CHARACTER),
           subExpression = fifthMatch || null,
           spreadExpression = fourthMatch || null,
+          ruleNames = ruleNamesFromSelectors(selectors),
           types = typesFromSelectors(selectors),
-          ruleNames = ruleNamesFromSelectorsAndTypes(selectors, types),
           spread = Spread.fromSpreadExpression(spreadExpression),
           subQuery = Query.fromSubExpressionAndTypes(subExpression, types),
           infiniteDescent = (secondMatch === FORWARD_SLASH_CHARACTER),
@@ -156,20 +156,22 @@ function typesFromSelectors(selectors) {
   return types;
 }
 
-function isSelectorTypeSelector(selector) { return /^@/.test(selector); }
+function ruleNamesFromSelectors(selectors) {
+  const ruleNames = [];
 
-function ruleNamesFromSelectors(selectors) { return selectors.filter(isSelectorRuleNameSelector); }
+  selectors.forEach((selector) => {
+    const selectorRuleNameSelector = isSelectorRuleNameSelector(selector);
 
-function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }
+    if (selectorRuleNameSelector) {
+      const ruleName = selector;  ///
 
-function ruleNamesFromSelectorsAndTypes(selectors, types) {
-  let ruleNames = [];
-
-  const typesLength = types.length;
-
-  if (typesLength === 0) {
-    ruleNames = ruleNamesFromSelectors(selectors);
-  }
+      ruleNames.push(ruleName);
+    }
+  });
 
   return ruleNames;
 }
+
+function isSelectorTypeSelector(selector) { return /^@/.test(selector); }
+
+function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }

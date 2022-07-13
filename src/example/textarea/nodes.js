@@ -3,7 +3,7 @@
 import Textarea from "../textarea";
 
 import { EMPTY_STRING } from "../../constants";
-import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../../utilities/token"
+import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../utilities/token"
 
 export default class NodesTextarea extends Textarea {
   getNodes() {
@@ -26,8 +26,8 @@ export default class NodesTextarea extends Textarea {
         value = `${value}[${significantTokenType}]${tokenIndex}\n`;
       } else {
         const nonTerminalNode = node, ///
-            ruleName = nonTerminalNode.getRuleName(),
-            tokenIndexes = tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens);
+              ruleName = nonTerminalNode.getRuleName(),
+              tokenIndexes = tokenIndexesFromNonTerminalNodeAndTokens(nonTerminalNode, tokens);
 
         value = `${value}${ruleName}${tokenIndexes}\n`;
       }

@@ -15,7 +15,7 @@ export function trim(array, startIndex, endIndex) {
   }
 
   start = 0;
-  deleteCount = startIndex;
+  deleteCount = startIndex; ///
 
   array.splice(start, deleteCount);
 }

@@ -6,7 +6,7 @@ import Spread from "./spread";
 
 import { includes, push, clear, second, third, fourth, fifth } from "./utilities/array";
 
-const { WILDCARD_CHARACTER, FORWARD_SLASH_CHARACTER, EXCLAMATION_MARK_CHARACTER } = characters;
+const { BAR_CHARACTER, WILDCARD_CHARACTER, FORWARD_SLASH_CHARACTER } = characters;
 
 export default class Query {
   constructor(ruleNames, types, spread, subQuery,  maximumDepth, infiniteDescent, intermediateNodes) {
@@ -125,7 +125,7 @@ export default class Query {
           thirdMatch = third(matches),
           fourthMatch = fourth(matches),
           fifthMatch = fifth(matches),
-          selectors = thirdMatch.split(EXCLAMATION_MARK_CHARACTER),
+          selectors = thirdMatch.split(BAR_CHARACTER),
           subExpression = fifthMatch || null,
           spreadExpression = fourthMatch || null,
           types = typesFromSelectors(selectors),

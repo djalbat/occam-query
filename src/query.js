@@ -9,11 +9,11 @@ import { includes, push, clear, second, third, fourth, fifth } from "./utilities
 const { BAR_CHARACTER, WILDCARD_CHARACTER, FORWARD_SLASH_CHARACTER } = characters;
 
 export default class Query {
-  constructor(ruleNames, types, spread, subQuery,  maximumDepth, infiniteDescent, intermediateNodes) {
-    this.ruleNames = ruleNames;
+  constructor(types, spread, subQuery,  ruleNames, maximumDepth, infiniteDescent, intermediateNodes) {
     this.types = types;
     this.spread = spread;
     this.subQuery = subQuery;
+    this.ruleNames = ruleNames;
     this.maximumDepth = maximumDepth;
     this.infiniteDescent = infiniteDescent;
     this.intermediateNodes = intermediateNodes;
@@ -102,40 +102,29 @@ export default class Query {
     }
   }
 
-  static fromSubExpressionAndTypes(subExpression, types) {
+  static fromExpression(expression, maximumDepth = Infinity) {
     let query = null;
 
-    if (subExpression !== null) {
-      const typesLength = types.length;
+    if (expression !== null) {
+      const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
+            matches = expression.match(regExp),
+            secondMatch = second(matches),
+            thirdMatch = third(matches),
+            fourthMatch = fourth(matches),
+            fifthMatch = fifth(matches),
+            selectors = thirdMatch.split(BAR_CHARACTER),
+            subExpression = fifthMatch || null,
+            spreadExpression = fourthMatch || null,
+            types = typesFromSelectors(selectors),
+            spread = Spread.fromSpreadExpression(spreadExpression),
+            subQuery = Query.fromExpression(subExpression),
+            ruleNames = ruleNamesFromSelectors(selectors),
+            infiniteDescent = (secondMatch === FORWARD_SLASH_CHARACTER),
+            intermediateNodes = [];
 
-      if (typesLength === 0) {
-        const expression = subExpression;  ///
-
-        query = Query.fromExpression(expression);
-      }
+      query = new Query(types, spread, subQuery, ruleNames, maximumDepth, infiniteDescent, intermediateNodes);
     }
 
-    return query;
-  }
-
-  static fromExpression(expression, maximumDepth = Infinity) {
-    const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
-          matches = expression.match(regExp),
-          secondMatch = second(matches),
-          thirdMatch = third(matches),
-          fourthMatch = fourth(matches),
-          fifthMatch = fifth(matches),
-          selectors = thirdMatch.split(BAR_CHARACTER),
-          subExpression = fifthMatch || null,
-          spreadExpression = fourthMatch || null,
-          ruleNames = ruleNamesFromSelectors(selectors),
-          types = typesFromSelectors(selectors),
-          spread = Spread.fromSpreadExpression(spreadExpression),
-          subQuery = Query.fromSubExpressionAndTypes(subExpression, types),
-          infiniteDescent = (secondMatch === FORWARD_SLASH_CHARACTER),
-          intermediateNodes = [],
-          query = new Query(ruleNames, types, spread, subQuery, maximumDepth, infiniteDescent, intermediateNodes);
-    
     return query;
   }
 }

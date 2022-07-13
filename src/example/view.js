@@ -22,15 +22,6 @@ const florenceLexer = FlorenceLexer.fromNothing(),
 const { queryByExpression } = queryUtilities;
 
 class View extends Element {
-  initialContent = `Type NaturalNumber
-
-Constructor zero:NaturalNumber
-`;
-
-  initialExpression = "//declaration//@name";
-
-  initialMaximumDepth = 5;
-
   keyUpHandler() {
     try {
       const content = this.getContent(),
@@ -94,9 +85,10 @@ Constructor zero:NaturalNumber
   initialise() {
     this.assignContext();
 
-    const content = this.initialContent,  ///
-          expression = this.initialExpression,  ///
-          maximumDepth = this.initialMaximumDepth;  ///
+    const { initialContent, initialExpression, initialMaximumDepth } = this.constructor,
+          content = initialContent,  ///
+          expression = initialExpression,  ///
+          maximumDepth = initialMaximumDepth;  ///
 
     this.setContent(content);
 
@@ -106,6 +98,15 @@ Constructor zero:NaturalNumber
 
     this.keyUpHandler();  ///
   }
+
+  static initialContent = `Type NaturalNumber
+
+Constructor zero:NaturalNumber
+`;
+
+  static initialExpression = "//document//@name";
+
+  static initialMaximumDepth = 5;
 
   static tagName = "div";
 

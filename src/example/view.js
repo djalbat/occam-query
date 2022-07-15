@@ -22,7 +22,7 @@ const florenceLexer = FlorenceLexer.fromNothing(),
 const { queryByExpression } = queryUtilities;
 
 class View extends Element {
-  keyUpHandler() {
+  keyUpHandler = (event, element) => {
     try {
       const content = this.getContent(),
             tokens = florenceLexer.tokenise(content),
@@ -43,8 +43,6 @@ class View extends Element {
   }
 
   childElements() {
-    const keyUpHandler = this.keyUpHandler.bind(this);
-
     return ([
 
       <ColumnsDiv>
@@ -53,11 +51,11 @@ class View extends Element {
             <SubHeading>
               Expression
             </SubHeading>
-            <ExpressionInput onKeyUp={keyUpHandler} />
+            <ExpressionInput onKeyUp={this.keyUpHandler} />
             <SubHeading>
               Maximum depth
             </SubHeading>
-            <MaximumDepthInput onKeyUp={keyUpHandler} />
+            <MaximumDepthInput onKeyUp={this.keyUpHandler} />
             <SubHeading>
               Nodes
             </SubHeading>
@@ -70,7 +68,7 @@ class View extends Element {
             <SubHeading>
               Content
             </SubHeading>
-            <ContentTextarea onKeyUp={keyUpHandler} />
+            <ContentTextarea onKeyUp={this.keyUpHandler} />
             <SubHeading>
               Parse tree
             </SubHeading>

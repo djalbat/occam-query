@@ -72,7 +72,9 @@ export default class Query {
         const nonTerminalNode = node, ///
               childNodes = nonTerminalNode.getChildNodes();
 
-        childNodes.forEach((childNode) => this.find(childNode, depth, maximumDepth));
+        childNodes.forEach((childNode) => {
+          this.find(childNode, depth, maximumDepth);
+        });
       }
     }
   }
@@ -94,7 +96,9 @@ export default class Query {
 
           this.subQuery.clear();
 
-          childNodes.forEach((childNode) => this.subQuery.find(childNode, depth, maximumDepth));
+          childNodes.forEach((childNode) => {
+            this.subQuery.find(childNode, depth, maximumDepth);
+          });
 
           this.subQuery.apply(nodes, depth, maximumDepth);
         }

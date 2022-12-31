@@ -36,22 +36,22 @@ export default class Spread {
       } else {
         const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
               matches = spreadExpression.match(regExp),
-              secondMatch = second(matches),
-              thirdMatch = third(matches),
-              fourthMatch = fourth(matches);
+              secondMatch = second(matches) || null,
+              thirdMatch = third(matches) || null,
+              fourthMatch = fourth(matches) || null;
 
-        if (secondMatch !== undefined) {
+        if (secondMatch !== null) {
           startIndex = parseInt(secondMatch);
 
-          if (thirdMatch === undefined) {
+          if (thirdMatch === null) {
             endIndex = startIndex;
           }
         }
 
-        if (fourthMatch !== undefined) {
+        if (fourthMatch !== null) {
           endIndex = parseInt(fourthMatch);
 
-          if (thirdMatch === undefined) {
+          if (thirdMatch === null) {
             startIndex = endIndex;
           }
         }

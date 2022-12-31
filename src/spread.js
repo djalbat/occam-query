@@ -34,7 +34,7 @@ export default class Spread {
       if (spreadExpression === EXCLAMATION_MARK_CHARACTER) {
         unique = true;
       } else {
-        const regExp = /\[(\d+)?(\.\.\.)?(\d+)?]/,
+        const regExp = /\[(-?\d+)?(\.\.\.)?(-?\d+)?]/,
               matches = spreadExpression.match(regExp),
               secondMatch = second(matches) || null,
               thirdMatch = third(matches) || null,
@@ -44,7 +44,7 @@ export default class Spread {
           startIndex = parseInt(secondMatch);
 
           if (thirdMatch === null) {
-            endIndex = startIndex;
+            endIndex = startIndex;  ///
           }
         }
 
@@ -52,7 +52,7 @@ export default class Spread {
           endIndex = parseInt(fourthMatch);
 
           if (thirdMatch === null) {
-            startIndex = endIndex;
+            startIndex = endIndex;  ///
           }
         }
       }

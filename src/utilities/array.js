@@ -5,17 +5,22 @@ import { arrayUtilities } from "necessary";
 export const { clear, push, second, third, fourth, fifth } = arrayUtilities;
 
 export function trim(array, startIndex, endIndex) {
-  let start,
-      deleteCount;
+  if (startIndex < 0) {
+    const length = array.length; ///
+
+    startIndex = length + startIndex; ///
+
+    endIndex = length + endIndex; ///
+  }
 
   if (endIndex !== Infinity) {
-    start = endIndex + 1;
+    const start = endIndex + 1;
 
     array.splice(start);
   }
 
-  start = 0;
-  deleteCount = startIndex; ///
+  const start = 0,
+        deleteCount = startIndex; ///
 
   array.splice(start, deleteCount);
 }

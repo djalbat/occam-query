@@ -102,7 +102,7 @@ class View extends Element {
 Constructor zero:NaturalNumber
 `;
 
-  static initialExpression = "//document//@name";
+  static initialExpression = "//document//@name[-2...-1]";
 
   static initialMaximumDepth = 5;
 

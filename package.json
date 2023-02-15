@@ -21,8 +21,8 @@
     "express": "^4.17.1",
     "juxtapose": "^4.0.49",
     "lively-cli": "^2.0.34",
-    "occam-grammars": "^1.0.377",
-    "watchful-cli": "^1.7.22"
+    "watchful-cli": "^1.7.22",
+    "with-style": "^5.0.129"
   },
   "scripts": {
     "start": "node ./bin/main.js",

@@ -19,29 +19,25 @@ A query expression consists of a leading, forward slash `/` followed by an optio
 
 Here is an example DOM together with some query expressions and their meaning, to help clarify:
 ```
-                                                                  document(0-7)
-                                                                        |
-                                               --------------------------------------------------
-                                               |                                                |
-                                       declaration(0-5)                                 verticalSpace(7)
-                                               |                                                |
-           ---------------------------------------------------------------------        [end-of-line](7)
-           |                                   |                               |
-Constructor[keyword](0)           constructorDeclaration(2-4)          [end-of-line](5)
-                                               |
-                           ----------------------------------------
-                           |                |                     |
-                        term(2)       :[special](3)          typeName(4)
-                           |                                      |
-                        name(2)                     NaturalNumber[unassigned](4)
-                           |
-                  zero[unassigned](2)
-
+                                                                  stylesheet                                                  
+                                                                       |                                                      
+                                                                    ruleSet                                                   
+                                                                       |                                                      
+                    ------------------------------------------------------------------------------------------------------    
+                    |                            |                                      |                                |    
+                selectors                   {[special]                             declaration                      }[special]
+                    |                                                                   |                                     
+                selector                                          ---------------------------------------------               
+                    |                                             |                |            |             |               
+                  class                                       property        :[special]   expression    ;[special]           
+                    |                                             |                             |                             
+     -------------------------------                   background[identifier]                 term                            
+     |            |                |                                                            |                             
+.[special] <NO_WHITESPACE> view[identifier]                                              red[identifier]                      
 ```
-* `/document` matches the topmost non-terminal node of that name.
-* `//term` matches all non-terminal nodes of that name.
-* `//@end-of-line[1]` matches the second of all terminal nodes of type `end-of-line`.
-* `/*/*` matches all second-level non-terminal nodes, in this case the `declaration` and `verticalSpace` nodes.
+* `/stylesheet` matches the topmost `stylesheet` non-terminal node.
+* `//term` matches all `term` non-terminal nodes to an arbitrary depth.
+* `//@special[2...4]` matches from the third to the fifth of all `special` terminal nodes.
 
 ## Installation
 

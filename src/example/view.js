@@ -3,9 +3,8 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
-import { FlorenceLexer } from "occam-grammars";
-import { FlorenceParser } from "occam-grammars";
 import { queryUtilities } from "../index";  ///
+import { CSSLexer, CSSParser } from "with-style";
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
 import SubHeading from "./subHeading";
@@ -16,8 +15,8 @@ import ContentTextarea from "./textarea/content";
 import MaximumDepthInput from "./input/maximumDepth";
 import ParseTreeTextarea from "./textarea/parseTree";
 
-const florenceLexer = FlorenceLexer.fromNothing(),
-      florenceParser = FlorenceParser.fromNothing();
+const cssLexer = CSSLexer.fromNothing(),
+      cssParser = CSSParser.fromNothing();
 
 const { queryByExpression } = queryUtilities;
 
@@ -25,9 +24,10 @@ class View extends Element {
   keyUpHandler = (event, element) => {
     try {
       const content = this.getContent(),
-            tokens = florenceLexer.tokenise(content),
-            node = florenceParser.parse(tokens),
-            parseTree = node.asParseTree(tokens),
+            tokens = cssLexer.tokenise(content),
+            node = cssParser.parse(tokens),
+            abridged = true,
+            parseTree = node.asParseTree(tokens, abridged),
             expression = this.getExpression(),
             maximumDepth = this.getMaximumDepth(),
             nodes = queryByExpression(node, expression, maximumDepth);
@@ -97,12 +97,12 @@ class View extends Element {
     this.keyUpHandler();  ///
   }
 
-  static initialContent = `Type NaturalNumber
-
-Constructor zero:NaturalNumber
+  static initialContent = `.view {
+  background: red;
+}
 `;
 
-  static initialExpression = "//document//@name[-2...-1]";
+  static initialExpression = "//@special[2...4]";
 
   static initialMaximumDepth = 5;
 

@@ -7,13 +7,13 @@ import { queryUtilities } from "../index";  ///
 import { CSSLexer, CSSParser } from "with-style";
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
-import SubHeading from "./subHeading";
-import SizeableDiv from "./div/sizeable";
-import NodesTextarea from "./textarea/nodes";
-import ExpressionInput from "./input/expression";
-import ContentTextarea from "./textarea/content";
-import MaximumDepthInput from "./input/maximumDepth";
-import ParseTreeTextarea from "./textarea/parseTree";
+import SubHeading from "./view/subHeading";
+import SizeableDiv from "./view/div/sizeable";
+import NodesTextarea from "./view/textarea/nodes";
+import ExpressionInput from "./view/input/expression";
+import ContentTextarea from "./view/textarea/content";
+import MaximumDepthInput from "./view/input/maximumDepth";
+import ParseTreeTextarea from "./view/textarea/parseTree";
 
 const cssLexer = CSSLexer.fromNothing(),
       cssParser = CSSParser.fromNothing();

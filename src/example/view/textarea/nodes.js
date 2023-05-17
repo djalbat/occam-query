@@ -2,8 +2,8 @@
 
 import Textarea from "../textarea";
 
-import { EMPTY_STRING } from "../../constants";
-import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../utilities/token"
+import { EMPTY_STRING } from "../../../constants";
+import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../../utilities/token"
 
 export default class NodesTextarea extends Textarea {
   getNodes() {

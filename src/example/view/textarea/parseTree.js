@@ -4,7 +4,7 @@ import withStyle from "easy-with-style";  ///
 
 import Textarea from "../textarea";
 
-import { EMPTY_STRING } from "../../constants";
+import { EMPTY_STRING } from "../../../constants";
 
 class ParseTreeTextarea extends Textarea {
   setParseTree(parseTree) {

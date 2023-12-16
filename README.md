@@ -6,8 +6,8 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Example](#example)
+- [Usage](#usage)
 - [Building](#building)
 - [Contact](#contact)
 
@@ -55,6 +55,24 @@ You can also clone the repository with [Git](https://git-scm.com/)...
 
 You can also run a development server, see the section on building later on.
 
+## Example
+
+There is a small development server that can be run from within the project's directory with the following command:
+
+    npm start
+
+The example will then be available at the following URL:
+
+http://localhost:8888
+
+The source for the example can be found in the `src/example.js` file and corresponding `src/example` folder. You are encouraged to try the example whilst reading what follows. You can rebuild it on the fly with the following command:
+
+    npm run watch-debug
+
+The development server will reload the page whenever you make changes.
+
+One last thing to bear in mind is that this package is included by way of a relative rather than a package import. If you are importing it into your own application, however, you should use the standard package import.
+
 ## Usage
 
 The collection of query utility functions is exported as a plain old JavaScript object. The only one of use is the `queryByExpression(...)` function:
@@ -87,22 +105,12 @@ const node = ...,
 ```
 This is quicker than using the `queryByExpression()` function, which will create such an object each time it is invoked. Again there is an optional last `maximumDepth` argument, left out here.
 
-## Example
-
-There is one example with a given DOM and starting query expression. To view it, open the `index.html` file in the root of the repository. All the nodes matching the expression are given. You can change the content, which will update the parse tree; the expression, which will update the selected nodes; or the maximum depth, which will also affect the selected nodes.
-
 ## Building
 
 Automation is done with [npm scripts](https://docs.npmjs.com/misc/scripts), have a look at the `package.json` file. The pertinent commands are:
 
     npm run build-debug
     npm run watch-debug
-
-You can also start a small development server:
-
-    npm start
-
-The example will then be available at http://localhost:8888 and will reload automatically when changes are made.
 
 ## Contact
 

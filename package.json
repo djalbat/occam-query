@@ -1,7 +1,7 @@
 {
   "name": "occam-queru",
   "author": "James Smith",
-  "version": "3.1.131",
+  "version": "3.1.132",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/djalbat/occam-query",
   "description": "Occam's query functionality.",

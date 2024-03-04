@@ -13,11 +13,11 @@
 
 ## Introduction
 
-This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting nodes from document object models returned by Occam's [parsers](https://github.com/djalbat/occam-parsers).
+This package provides a simple, [XPath](https://en.wikipedia.org/wiki/XPath)-like query language for selecting from nodes returned by Occam's [parsers](https://github.com/djalbat/occam-parsers).
 
 A query expression consists of a leading, forward slash `/` followed by an optional forward slash to signify arbitrary depth, followed by a list of either non-terminal node rule names or terminal node significant token types, finally followed by an optional spread expression and a sub-query. You cannot mix rule names and significant token types and the sub-queries of query expressions with significant token types are ignored. Further explanation would likely just confuse. It is best simply to play around with the expression in the example to select different nodes.
 
-Here is an example DOM together with some query expressions and their meaning, to help clarify:
+Here is an example parse tree together with some query expressions and their meaning, to help clarify:
 ```
                                                                   stylesheet                                                  
                                                                        |                                                      
@@ -43,11 +43,11 @@ Here is an example DOM together with some query expressions and their meaning, t
 
 With [npm](https://www.npmjs.com/):
 
-    npm install occam-dom
+    npm install occam-query
 
 You can also clone the repository with [Git](https://git-scm.com/)...
 
-    git clone https://github.com/djalbat/occam-dom.git
+    git clone https://github.com/djalbat/occam-query.git
 
 ...and then install the dependencies with npm from within the project's root directory:
 
@@ -78,7 +78,7 @@ One last thing to bear in mind is that this package is included by way of a rela
 The collection of query utility functions is exported as a plain old JavaScript object. The only one of use is the `queryByExpression(...)` function:
 
 ```
-import { queryUtilities } from "occam-dom";
+import { queryUtilities } from "occam-query";
 
 const { queryByExpression } = queryUtilities;
 
@@ -94,7 +94,7 @@ The `maximumDepth` argument is optional, the default is `Infinity`.
 If repeatedly using the same query expression, build a `query` object and make use of its `execute(...)` method:
 
 ```
-import { Query } from "occam-dom";
+import { Query } from "occam-query";
 
 const node = ...,
       expression = "...",

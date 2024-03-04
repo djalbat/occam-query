@@ -1,6 +1,6 @@
-# Occam DOM
+# Occam Query
 
-[Occam](https://github.com/djalbat/occam)'s DOM related functionality.
+[Occam](https://github.com/djalbat/occam)'s query functionality.
 
 ### Contents
 

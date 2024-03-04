@@ -1,13 +1,13 @@
 {
-  "name": "occam-dom",
+  "name": "occam-query",
   "author": "James Smith",
-  "version": "3.1.130",
+  "version": "3.1.131",
   "license": "MIT, Anti-996",
-  "homepage": "https://github.com/djalbat/occam-dom",
-  "description": "Occam's DOM related functionality.",
+  "homepage": "https://github.com/djalbat/occam-query",
+  "description": "Occam's query functionality.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/djalbat/occam-dom"
+    "url": "https://github.com/djalbat/occam-query"
   },
   "dependencies": {
     "necessary": "^13.3.1"

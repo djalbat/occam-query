@@ -18,6 +18,12 @@ export default class SubExpression {
     return this.subExpression;
   }
 
+  getRuleNames() { return this.path.getRuleNames(); }
+
+  getTokenTypes() { return this.path.getTokenTypes(); }
+
+  isInfiniteDescent() { return this.path.isInfiniteDescent(); }
+
   static fromSubExpressionNode(subExpressionNode) {
     let subExpression = null;
 

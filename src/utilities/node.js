@@ -1,7 +1,8 @@
 "use strict";
 
 import { first, second, third, last } from "../utilities/array";
-import { UNIQUE_RULE_NAME,
+import { ERROR_RULE_NAME,
+         UNIQUE_RULE_NAME,
          SPREAD_RULE_NAME,
          END_INDEX_RULE_NAME,
          RULE_NAME_RULE_NAME,
@@ -9,6 +10,30 @@ import { UNIQUE_RULE_NAME,
          TOKEN_TYPE_RULE_NAME,
          SUB_EXPRESSION_RULE_NAME,
          INFINITE_DESCENT_RULE_NAME } from "../ruleNames";
+
+export function errorNodesFromExpressionNode(expressionNode) {
+  const nonTerminalNode = expressionNode, ///
+        childNodes = nonTerminalNode.getChildNodes(),
+        errorNodes = childNodes.reduce((errorNodes, childNode) => {
+          const childNodeNonTerminalNode = childNode.isNonTerminalNode();
+
+          if (childNodeNonTerminalNode) {
+            const nonTerminalNode = childNode,  ///
+                  ruleName = nonTerminalNode.getRuleName(),
+                  ruleNameErrorRuleName = (ruleName === ERROR_RULE_NAME);
+
+            if (ruleNameErrorRuleName) {
+              const errorNode = nonTerminalNode;  ///
+
+              errorNodes.push(errorNode);
+            }
+          }
+
+          return errorNodes;
+        }, []);
+
+  return errorNodes;
+}
 
 export function uniqueFromSpreadNode(spreadNode) {
   let unique = false;
@@ -67,7 +92,7 @@ export function endIndexFromSpreadNode(spreadNode) {
 export function startIndexFromSpreadNode(spreadNode) {
   let startIndex = 0;
 
-  const nonTerminalNode = spreadNode,
+  const nonTerminalNode = spreadNode, ///
         childNodes = nonTerminalNode.getChildNodes(),
         startIndexNode = childNodes.find((childNode) => {
           const childNodeNonTerminalNode = childNode.isNonTerminalNode();

@@ -136,7 +136,28 @@ export default class Query {
   }
 
   static fromExpression(expression, maximumDepth = Infinity) {
+    const spread = expression.getSpread(),
+          subQuery = subQueryFromExpression(expression),
+          ruleNames = expression.getRuleNames(),
+          tokenTypes = expression.getTokenTypes(),
+          infiniteDescent = expression.isInfiniteDescent(),
+          intermediateNodes = [],
+          query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
 
+    return query;
+  }
+
+  static fromSubExpression(subExpression) {
+    const spread = Spread.fromNothing(),
+          subQuery = subQueryFromSubExpression(subExpression),
+          ruleNames = subExpression.getRuleNames(),
+          tokenTypes = subExpression.getTokenTypes(),
+          maximumDepth = Infinity,
+          infiniteDescent = subExpression.isInfiniteDescent(),
+          intermediateNodes = [],
+          query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
+
+    return query;
   }
 
   static fromExpressionString(expressionString, maximumDepth = Infinity) {
@@ -164,6 +185,34 @@ export default class Query {
 
     return query;
   }
+}
+
+function subQueryFromExpression(expression) {
+  let subQuery = null;
+
+  const subExpression = expression.getSubExpression();
+
+  if (subExpression !== null) {
+    const query = Query.fromSubExpression(subExpression);
+
+    subQuery = query; ///
+  }
+
+  return subQuery;
+}
+
+function subQueryFromSubExpression(subExpression) {
+  let subQuery = null;
+
+  subExpression = subExpression.getSubExpression(); ///
+
+  if (subExpression !== null) {
+    const query = Query.fromSubExpression(subExpression);
+
+    subQuery = query; ///
+  }
+
+  return subQuery;
 }
 
 function tokenTypesFromSelectors(selectors) {

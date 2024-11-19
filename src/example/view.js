@@ -3,8 +3,8 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
+import { queryUtilities } from "../index";  ///
 import { CSSLexer, CSSParser } from "with-style";
-import { queryUtilities, Query, Expression } from "../index";  ///
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
 import SubHeading from "./view/subHeading";
@@ -48,27 +48,12 @@ class View extends Element {
           maximumDepth = this.getMaximumDepth(),
           nodes = queryByExpressionString(node, expressionString, maximumDepth);
 
-    this.setNodes(nodes, tokens); ///
+    if (nodes !== null) {
+      const contentParseTree = parseTree; ///
 
-    const contentParseTree = parseTree; ///
+      this.setNodes(nodes, tokens); ///
 
-    this.setContentParseTree(contentParseTree);
-
-    {
-      const expressionString = this.getExpressionString(),
-            expression = Expression.fromExpressionString(expressionString),
-            tokens = expression.getTokens(),
-            node = expression.getNode();
-
-      if (node === null) {
-        return;
-      }
-
-      const abridged = true,
-            parseTree = node.asParseTree(tokens, abridged),
-            expressionParseTree = parseTree;  ///
-
-      this.setExpressionParseTree(expressionParseTree);
+      this.setContentParseTree(contentParseTree);
     }
   }
 
@@ -136,7 +121,9 @@ class View extends Element {
 }
 `;
 
-  static initialExpressionString = "/*//@special[2...4]";
+  static _initialExpressionString = "/*//@special[2...4]";
+
+  static initialExpressionString = "/*";
 
   static initialMaximumDepth = 5;
 

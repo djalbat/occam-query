@@ -26,16 +26,29 @@ export default class Spread {
     }
   }
 
+  static fromNothing() {
+    const startIndex = 0,
+          endIndex = Infinity,
+          unique = false,
+          spread = new Spread(startIndex, endIndex, unique);
+
+    return spread;
+  }
+
   static fromSpreadNode(spreadNode) {
-    let spread = null;
+    let startIndex = 0,
+        endIndex = Infinity,
+        unique = false;
 
     if (spreadNode !== null) {
-      const startIndex = startIndexFromSpreadNode(spreadNode),
-            endIndex = endIndexFromSpreadNode(spreadNode),
-            unique = uniqueFromSpreadNode(spreadNode);
+      startIndex = startIndexFromSpreadNode(spreadNode);
 
-      spread = new Spread(startIndex, endIndex, unique);
+      endIndex = endIndexFromSpreadNode(spreadNode);
+
+      unique = uniqueFromSpreadNode(spreadNode);
     }
+
+    const spread = new Spread(startIndex, endIndex, unique);
 
     return spread;
   }

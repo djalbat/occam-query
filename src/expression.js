@@ -6,7 +6,10 @@ import SubExpression from "./subExpression";
 import ExpressionLexer from "./expression/lexer";
 import ExpressionParser from "./expression/parser";
 
-import { pathNodeFromExpressionNode, spreadNodeFromExpressionNode, subExpressionNodeFromExpressionNode } from "./utilities/node";
+import { pathNodeFromExpressionNode,
+         spreadNodeFromExpressionNode,
+         errorNodesFromExpressionNode,
+         subExpressionNodeFromExpressionNode } from "./utilities/node";
 
 const expressionLexer = ExpressionLexer.fromNothing(),
       expressionParser = ExpressionParser.fromNothing();
@@ -40,6 +43,12 @@ export default class Expression {
     return this.subExpression;
   }
 
+  getRuleNames() { return this.path.getRuleNames(); }
+
+  getTokenTypes() { return this.path.getTokenTypes(); }
+
+  isInfiniteDescent() { return this.path.isInfiniteDescent(); }
+
   static fromExpressionString(string) {
     let expression = null;
 
@@ -51,14 +60,19 @@ export default class Expression {
 
     if (node !== null) {
       const expressionNode = node, ///
-            pathNode = pathNodeFromExpressionNode(expressionNode),
-            spreadNode = spreadNodeFromExpressionNode(expressionNode),
-            subExpressionNode = subExpressionNodeFromExpressionNode(expressionNode),
-            path = Path.fromPathNode(pathNode),
-            spread = Spread.fromSpreadNode(spreadNode),
-            subExpression = SubExpression.fromSubExpressionNode(subExpressionNode);
+            errorNodes = errorNodesFromExpressionNode(expressionNode),
+            errorNodesLength = errorNodes.length;
 
-      expression = new Expression(tokens, node, path, spread, subExpression);
+      if (errorNodesLength === 0) {
+        const pathNode = pathNodeFromExpressionNode(expressionNode),
+              spreadNode = spreadNodeFromExpressionNode(expressionNode),
+              subExpressionNode = subExpressionNodeFromExpressionNode(expressionNode),
+              path = Path.fromPathNode(pathNode),
+              spread = Spread.fromSpreadNode(spreadNode),
+              subExpression = SubExpression.fromSubExpressionNode(subExpressionNode);
+
+        expression = new Expression(tokens, node, path, spread, subExpression);
+      }
     }
 
     return expression;

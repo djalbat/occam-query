@@ -3,42 +3,72 @@
 import withStyle from "easy-with-style";  ///
 
 import { Element } from "easy";
-import { queryUtilities } from "../index";  ///
 import { CSSLexer, CSSParser } from "with-style";
+import { queryUtilities, Query, Expression } from "../index";  ///
 import { RowsDiv, ColumnDiv, ColumnsDiv, VerticalSplitterDiv } from "easy-layout";
 
 import SubHeading from "./view/subHeading";
 import SizeableDiv from "./view/div/sizeable";
 import NodesTextarea from "./view/textarea/nodes";
-import ExpressionInput from "./view/input/expression";
 import ContentTextarea from "./view/textarea/content";
 import MaximumDepthInput from "./view/input/maximumDepth";
-import ParseTreeTextarea from "./view/textarea/parseTree";
+import ExpressionStringInput from "./view/input/expressionString";
+import ContentParseTreeTextarea from "./view/textarea/parseTree/content";
+import ExpressionParseTreeTextarea from "./view/textarea/parseTree/expression";
 
 const cssLexer = CSSLexer.fromNothing(),
       cssParser = CSSParser.fromNothing();
 
-const { queryByExpression } = queryUtilities;
+const { queryByExpressionString } = queryUtilities;
 
 class View extends Element {
   keyUpHandler = (event, element) => {
-    try {
-      const content = this.getContent(),
-            tokens = cssLexer.tokenise(content),
-            node = cssParser.parse(tokens),
-            abridged = true,
+    this.clearNodes();
+
+    this.clearContentParseTree();
+
+    this.clearExpressionParseTree();
+
+    const content = this.getContent(),
+          tokens = cssLexer.tokenise(content),
+          node = cssParser.parse(tokens);
+
+    if (node === null) {
+      return;
+    }
+
+    const abridged = true,
+          parseTree = node.asParseTree(tokens, abridged);
+
+    if (parseTree === null) {
+      return;
+    }
+
+    const expressionString = this.getExpressionString(),
+          maximumDepth = this.getMaximumDepth(),
+          nodes = queryByExpressionString(node, expressionString, maximumDepth);
+
+    this.setNodes(nodes, tokens); ///
+
+    const contentParseTree = parseTree; ///
+
+    this.setContentParseTree(contentParseTree);
+
+    {
+      const expressionString = this.getExpressionString(),
+            expression = Expression.fromExpressionString(expressionString),
+            tokens = expression.getTokens(),
+            node = expression.getNode();
+
+      if (node === null) {
+        return;
+      }
+
+      const abridged = true,
             parseTree = node.asParseTree(tokens, abridged),
-            expression = this.getExpression(),
-            maximumDepth = this.getMaximumDepth(),
-            nodes = queryByExpression(node, expression, maximumDepth);
+            expressionParseTree = parseTree;  ///
 
-      this.setNodes(nodes, tokens); ///
-
-      this.setParseTree(parseTree);
-    } catch (error) {
-      console.log(error);
-
-      this.clearNodes();
+      this.setExpressionParseTree(expressionParseTree);
     }
   }
 
@@ -51,15 +81,15 @@ class View extends Element {
             <SubHeading>
               Expression
             </SubHeading>
-            <ExpressionInput onKeyUp={this.keyUpHandler} />
+            <ExpressionStringInput onKeyUp={this.keyUpHandler} />
             <SubHeading>
               Maximum depth
             </SubHeading>
             <MaximumDepthInput onKeyUp={this.keyUpHandler} />
             <SubHeading>
-              Nodes
+              Expression parse tree
             </SubHeading>
-            <NodesTextarea />
+            <ExpressionParseTreeTextarea />
           </RowsDiv>
         </SizeableDiv>
         <VerticalSplitterDiv />
@@ -70,9 +100,13 @@ class View extends Element {
             </SubHeading>
             <ContentTextarea onKeyUp={this.keyUpHandler} />
             <SubHeading>
-              Parse tree
+              Content parse tree
             </SubHeading>
-            <ParseTreeTextarea />
+            <ContentParseTreeTextarea />
+            <SubHeading>
+              Nodes
+            </SubHeading>
+            <NodesTextarea />
           </RowsDiv>
         </ColumnDiv>
       </ColumnsDiv>
@@ -83,16 +117,16 @@ class View extends Element {
   initialise() {
     this.assignContext();
 
-    const { initialContent, initialExpression, initialMaximumDepth } = this.constructor,
+    const { initialContent, initialExpressionString, initialMaximumDepth } = this.constructor,
           content = initialContent,  ///
-          expression = initialExpression,  ///
-          maximumDepth = initialMaximumDepth;  ///
+          maximumDepth = initialMaximumDepth,  ///
+          expressionString = initialExpressionString;  ///
 
     this.setContent(content);
 
-    this.setExpression(expression);
-
     this.setMaximumDepth(maximumDepth);
+
+    this.setExpressionString(expressionString);
 
     this.keyUpHandler();  ///
   }
@@ -102,7 +136,7 @@ class View extends Element {
 }
 `;
 
-  static initialExpression = "//@special[2...4]";
+  static initialExpressionString = "/*//@special[2...4]";
 
   static initialMaximumDepth = 5;
 

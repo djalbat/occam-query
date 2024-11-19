@@ -8,36 +8,22 @@ import { EMPTY_STRING } from "../../../constants";
 
 class ParseTreeTextarea extends Textarea {
   setParseTree(parseTree) {
-    if (parseTree !== null) {
-      parseTree.shiftLine();  //
+    parseTree.shiftLine();  //
 
-      const parseTreeString = parseTree.asString(),
-            value = parseTreeString;  ///
+    const parseTreeString = parseTree.asString(),
+          value = parseTreeString;  ///
 
-      this.setValue(value);
-    } else {
-      this.clearParseTree();
-    }
+    this.setValue(value);
   }
 
-  clearParseTree() {
+  clearParseTree(parseTree) {
     const value = EMPTY_STRING;
 
     this.setValue(value);
   }
 
-  parentContext() {
-    const setParseTree = this.setParseTree.bind(this),
-          clearParseTree = this.clearParseTree.bind(this);
-
-    return ({
-      setParseTree,
-      clearParseTree
-    });
-  }
-
   static defaultProperties = {
-    className: "tokens",
+    className: "parse-tree",
     spellCheck: "false",
     readOnly: true
   };

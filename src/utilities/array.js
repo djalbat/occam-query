@@ -2,7 +2,7 @@
 
 import { arrayUtilities } from "necessary";
 
-export const { clear, push, second, third, fourth, fifth } = arrayUtilities;
+export const { clear, push, first, second, third, fourth, fifth, last } = arrayUtilities;
 
 export function trim(array, startIndex, endIndex) {
   if (startIndex < 0) {

@@ -6,13 +6,6 @@ import { EMPTY_STRING } from "../../../constants";
 import { tokenIndexFromTerminalNodeAndTokens, tokenIndexesFromNonTerminalNodeAndTokens } from "../../utilities/token"
 
 export default class NodesTextarea extends Textarea {
-  getNodes() {
-    const value = this.getValue(),
-          nodes = value; ///
-
-    return nodes;
-  }
-
   setNodes(nodes, tokens) { ///
     const value = nodes.reduce((value, node) => {
       const nodeTerminalNode = node.isTerminalNode();
@@ -45,12 +38,10 @@ export default class NodesTextarea extends Textarea {
   }
 
   parentContext() {
-    const getNodes = this.getNodes.bind(this),
-          setNodes = this.setNodes.bind(this),
+    const setNodes = this.setNodes.bind(this),
           clearNodes = this.clearNodes.bind(this);
 
     return ({
-      getNodes,
       setNodes,
       clearNodes
     });

@@ -3,6 +3,7 @@
 import { characters } from "necessary";
 
 import { clear, trim, second, third, fourth } from "./utilities/array";
+import { uniqueFromSpreadNode, endIndexFromSpreadNode, startIndexFromSpreadNode } from "./utilities/node";
 
 const { EXCLAMATION_MARK_CHARACTER } = characters;
 
@@ -23,6 +24,20 @@ export default class Spread {
     } else {
       trim(nodes, this.startIndex, this.endIndex);
     }
+  }
+
+  static fromSpreadNode(spreadNode) {
+    let spread = null;
+
+    if (spreadNode !== null) {
+      const startIndex = startIndexFromSpreadNode(spreadNode),
+            endIndex = endIndexFromSpreadNode(spreadNode),
+            unique = uniqueFromSpreadNode(spreadNode);
+
+      spread = new Spread(startIndex, endIndex, unique);
+    }
+
+    return spread;
   }
 
   static fromSpreadExpression(spreadExpression) {

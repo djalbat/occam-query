@@ -9,14 +9,42 @@ import { includes, push, clear, second, third, fourth, fifth } from "./utilities
 const { BAR_CHARACTER, WILDCARD_CHARACTER, FORWARD_SLASH_CHARACTER } = characters;
 
 export default class Query {
-  constructor(types, spread, subQuery,  ruleNames, maximumDepth, infiniteDescent, intermediateNodes) {
-    this.types = types;
+  constructor(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes) {
     this.spread = spread;
     this.subQuery = subQuery;
     this.ruleNames = ruleNames;
+    this.tokenTypes = tokenTypes;
     this.maximumDepth = maximumDepth;
     this.infiniteDescent = infiniteDescent;
     this.intermediateNodes = intermediateNodes;
+  }
+
+  getSpread() {
+    return this.sprea;
+  }
+
+  getSubQuery() {
+    return this.subQuery;
+  }
+
+  getRuleNames() {
+    return this.ruleNames;
+  }
+
+  getTokenTypes() {
+    return this.tokenTypes;
+  }
+
+  getMaximumDepth() {
+    return this.maximumDepth;
+  }
+
+  isInfiniteDescent() {
+    return this.infiniteDescent;
+  }
+
+  getIntermediateNodes() {
+    return this.intermediateNodes;
   }
 
   execute(node, depth = 0, maximumDepth = this.maximumDepth) {
@@ -47,9 +75,10 @@ export default class Query {
 
     if (nodeTerminalNode) {
       const terminalNode = node,  ///
+            types = this.tokenTypes,  ///
             type = terminalNode.getType();
 
-      found = includes(this.types, type, WILDCARD_CHARACTER);
+      found = includes(types, type, WILDCARD_CHARACTER);
     }
 
     if (nodeNonTerminalNode) {
@@ -107,46 +136,50 @@ export default class Query {
   }
 
   static fromExpression(expression, maximumDepth = Infinity) {
+
+  }
+
+  static fromExpressionString(expressionString, maximumDepth = Infinity) {
     let query = null;
 
-    if (expression !== null) {
+    if (expressionString !== null) {
       const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
-            matches = expression.match(regExp),
+            matches = expressionString.match(regExp),
             secondMatch = second(matches),
             thirdMatch = third(matches),
             fourthMatch = fourth(matches),
             fifthMatch = fifth(matches),
             selectors = thirdMatch.split(BAR_CHARACTER),
-            subExpression = fifthMatch || null,
             spreadExpression = fourthMatch || null,
-            types = typesFromSelectors(selectors),
+            subExpressionString = fifthMatch || null,
             spread = Spread.fromSpreadExpression(spreadExpression),
-            subQuery = Query.fromExpression(subExpression),
+            subQuery = Query.fromExpressionString(subExpressionString),
             ruleNames = ruleNamesFromSelectors(selectors),
+            tokenTypes = tokenTypesFromSelectors(selectors),
             infiniteDescent = (secondMatch === FORWARD_SLASH_CHARACTER),
             intermediateNodes = [];
 
-      query = new Query(types, spread, subQuery, ruleNames, maximumDepth, infiniteDescent, intermediateNodes);
+      query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
     }
 
     return query;
   }
 }
 
-function typesFromSelectors(selectors) {
-  const types = [];
+function tokenTypesFromSelectors(selectors) {
+  const tokenTypes = [];
 
   selectors.forEach((selector) => {
-    const selectorTypeSelector = isSelectorTypeSelector(selector);
+    const selectorTokenTypeSelector = isSelectorTokenTypeSelector(selector);
 
-    if (selectorTypeSelector) {
-      const type = selector.substring(1);
+    if (selectorTokenTypeSelector) {
+      const tokenType = selector.substring(1);
 
-      types.push(type);
+      tokenTypes.push(tokenType);
     }
   });
 
-  return types;
+  return tokenTypes;
 }
 
 function ruleNamesFromSelectors(selectors) {
@@ -165,6 +198,6 @@ function ruleNamesFromSelectors(selectors) {
   return ruleNames;
 }
 
-function isSelectorTypeSelector(selector) { return /^@/.test(selector); }
-
 function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }
+
+function isSelectorTokenTypeSelector(selector) { return /^@/.test(selector); }

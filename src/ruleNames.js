@@ -1,6 +1,7 @@
 "use strict";
 
 export const ERROR_RULE_NAME = "error";
+export const INDEX_RULE_NAME = "index";
 export const UNIQUE_RULE_NAME = "unique";
 export const SPREAD_RULE_NAME = "spread";
 export const END_INDEX_RULE_NAME = "endIndex";

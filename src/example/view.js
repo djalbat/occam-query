@@ -13,8 +13,7 @@ import NodesTextarea from "./view/textarea/nodes";
 import ContentTextarea from "./view/textarea/content";
 import MaximumDepthInput from "./view/input/maximumDepth";
 import ExpressionStringInput from "./view/input/expressionString";
-import ContentParseTreeTextarea from "./view/textarea/parseTree/content";
-import ExpressionParseTreeTextarea from "./view/textarea/parseTree/expression";
+import ParseTreeTextarea from "./view/textarea/parseTree";
 
 const cssLexer = CSSLexer.fromNothing(),
       cssParser = CSSParser.fromNothing();
@@ -25,9 +24,7 @@ class View extends Element {
   keyUpHandler = (event, element) => {
     this.clearNodes();
 
-    this.clearContentParseTree();
-
-    this.clearExpressionParseTree();
+    this.clearParseTree();
 
     const content = this.getContent(),
           tokens = cssLexer.tokenise(content),
@@ -38,22 +35,15 @@ class View extends Element {
     }
 
     const abridged = true,
-          parseTree = node.asParseTree(tokens, abridged);
-
-    if (parseTree === null) {
-      return;
-    }
-
-    const expressionString = this.getExpressionString(),
+          parseTree = node.asParseTree(tokens, abridged),
+          expressionString = this.getExpressionString(),
           maximumDepth = this.getMaximumDepth(),
           nodes = queryByExpressionString(node, expressionString, maximumDepth);
 
     if (nodes !== null) {
-      const contentParseTree = parseTree; ///
-
       this.setNodes(nodes, tokens); ///
 
-      this.setContentParseTree(contentParseTree);
+      this.setParseTree(parseTree);
     }
   }
 
@@ -71,10 +61,6 @@ class View extends Element {
               Maximum depth
             </SubHeading>
             <MaximumDepthInput onKeyUp={this.keyUpHandler} />
-            <SubHeading>
-              Expression parse tree
-            </SubHeading>
-            <ExpressionParseTreeTextarea />
           </RowsDiv>
         </SizeableDiv>
         <VerticalSplitterDiv />
@@ -85,9 +71,9 @@ class View extends Element {
             </SubHeading>
             <ContentTextarea onKeyUp={this.keyUpHandler} />
             <SubHeading>
-              Content parse tree
+              Parse tree
             </SubHeading>
-            <ContentParseTreeTextarea />
+            <ParseTreeTextarea />
             <SubHeading>
               Nodes
             </SubHeading>
@@ -121,9 +107,7 @@ class View extends Element {
 }
 `;
 
-  static _initialExpressionString = "/*//@special[2...4]";
-
-  static initialExpressionString = "/*";
+  static initialExpressionString = "/*//@special[2...4]";
 
   static initialMaximumDepth = 5;
 

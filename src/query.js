@@ -2,11 +2,9 @@
 
 import { characters } from "necessary";
 
-import Spread from "./spread";
+import { push, clear, includes } from "./utilities/array";
 
-import { includes, push, clear, second, third, fourth, fifth } from "./utilities/array";
-
-const { BAR_CHARACTER, WILDCARD_CHARACTER, FORWARD_SLASH_CHARACTER } = characters;
+const { WILDCARD_CHARACTER } = characters;
 
 export default class Query {
   constructor(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes) {
@@ -148,7 +146,7 @@ export default class Query {
   }
 
   static fromSubExpression(subExpression) {
-    const spread = Spread.fromNothing(),
+    const spread = subExpression.getSpread(),
           subQuery = subQueryFromSubExpression(subExpression),
           ruleNames = subExpression.getRuleNames(),
           tokenTypes = subExpression.getTokenTypes(),
@@ -156,32 +154,6 @@ export default class Query {
           infiniteDescent = subExpression.isInfiniteDescent(),
           intermediateNodes = [],
           query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
-
-    return query;
-  }
-
-  static fromExpressionString(expressionString, maximumDepth = Infinity) {
-    let query = null;
-
-    if (expressionString !== null) {
-      const regExp = /^\/(\/)?([^/\[!]+)(\[[^\]]+]|!)?(\/.*)?$/,
-            matches = expressionString.match(regExp),
-            secondMatch = second(matches),
-            thirdMatch = third(matches),
-            fourthMatch = fourth(matches),
-            fifthMatch = fifth(matches),
-            selectors = thirdMatch.split(BAR_CHARACTER),
-            spreadExpression = fourthMatch || null,
-            subExpressionString = fifthMatch || null,
-            spread = Spread.fromSpreadExpression(spreadExpression),
-            subQuery = Query.fromExpressionString(subExpressionString),
-            ruleNames = ruleNamesFromSelectors(selectors),
-            tokenTypes = tokenTypesFromSelectors(selectors),
-            infiniteDescent = (secondMatch === FORWARD_SLASH_CHARACTER),
-            intermediateNodes = [];
-
-      query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
-    }
 
     return query;
   }
@@ -214,39 +186,3 @@ function subQueryFromSubExpression(subExpression) {
 
   return subQuery;
 }
-
-function tokenTypesFromSelectors(selectors) {
-  const tokenTypes = [];
-
-  selectors.forEach((selector) => {
-    const selectorTokenTypeSelector = isSelectorTokenTypeSelector(selector);
-
-    if (selectorTokenTypeSelector) {
-      const tokenType = selector.substring(1);
-
-      tokenTypes.push(tokenType);
-    }
-  });
-
-  return tokenTypes;
-}
-
-function ruleNamesFromSelectors(selectors) {
-  const ruleNames = [];
-
-  selectors.forEach((selector) => {
-    const selectorRuleNameSelector = isSelectorRuleNameSelector(selector);
-
-    if (selectorRuleNameSelector) {
-      const ruleName = selector;  ///
-
-      ruleNames.push(ruleName);
-    }
-  });
-
-  return ruleNames;
-}
-
-function isSelectorRuleNameSelector(selector) { return /^[^@]/.test(selector); }
-
-function isSelectorTokenTypeSelector(selector) { return /^@/.test(selector); }

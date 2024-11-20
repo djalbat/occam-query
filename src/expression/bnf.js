@@ -2,7 +2,7 @@
 
 const bnf = `
 
-    expression       ::=  path subExpression? spread?  
+    expression       ::=  path spread? subExpression?   
     
                        |  error+ 
                                  
@@ -10,7 +10,7 @@ const bnf = `
   
     path             ::=  "/" infiniteDescent? selectors ;
     
-    subExpression    ::=  path subExpression?;
+    subExpression    ::=  path spread? subExpression?;
 
     infiniteDescent  ::=  "/" ;
     
@@ -30,7 +30,11 @@ const bnf = `
                             
                             | 
                             
-                            ( "..." endIndex ) 
+                            ( "..." endIndex )
+                             
+                            | 
+                            
+                            index 
                             
                           )  
                           
@@ -45,6 +49,8 @@ const bnf = `
     startIndex       ::=  [number] ;
                        
     endIndex         ::=  [number] ;
+                       
+    index            ::=  [number] ;
                        
     unique           ::=  "!" ;
                        

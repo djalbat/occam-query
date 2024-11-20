@@ -15,20 +15,10 @@ const expressionLexer = ExpressionLexer.fromNothing(),
       expressionParser = ExpressionParser.fromNothing();
 
 export default class Expression {
-  constructor(tokens, node, path, spread, subExpression) {
-    this.tokens = tokens;
-    this.node = node;
+  constructor(path, spread, subExpression) {
     this.path = path;
     this.spread = spread;
     this.subExpression = subExpression;
-  }
-
-  getTokens() {
-    return this.tokens;
-  }
-
-  getNode() {
-    return this.node;
   }
 
   getPath() {
@@ -71,7 +61,7 @@ export default class Expression {
               spread = Spread.fromSpreadNode(spreadNode),
               subExpression = SubExpression.fromSubExpressionNode(subExpressionNode);
 
-        expression = new Expression(tokens, node, path, spread, subExpression);
+        expression = new Expression(path, spread, subExpression);
       }
     }
 

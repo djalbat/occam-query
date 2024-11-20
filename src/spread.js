@@ -3,7 +3,10 @@
 import { characters } from "necessary";
 
 import { clear, trim, second, third, fourth } from "./utilities/array";
-import { uniqueFromSpreadNode, endIndexFromSpreadNode, startIndexFromSpreadNode } from "./utilities/node";
+import { indexFromSpreadNode,
+         uniqueFromSpreadNode,
+         endIndexFromSpreadNode,
+         startIndexFromSpreadNode } from "./utilities/node";
 
 const { EXCLAMATION_MARK_CHARACTER } = characters;
 
@@ -41,9 +44,17 @@ export default class Spread {
         unique = false;
 
     if (spreadNode !== null) {
-      startIndex = startIndexFromSpreadNode(spreadNode);
+      const index = indexFromSpreadNode(spreadNode);
 
-      endIndex = endIndexFromSpreadNode(spreadNode);
+      if (index !== null) {
+        startIndex = index; ///
+
+        endIndex = index; ///
+      } else {
+        startIndex = startIndexFromSpreadNode(spreadNode);
+
+        endIndex = endIndexFromSpreadNode(spreadNode);
+      }
 
       unique = uniqueFromSpreadNode(spreadNode);
     }

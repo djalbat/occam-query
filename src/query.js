@@ -2,6 +2,8 @@
 
 import { characters } from "necessary";
 
+import Expression from "./expression";
+
 import { push, clear, includes } from "./utilities/array";
 
 const { WILDCARD_CHARACTER } = characters;
@@ -154,6 +156,25 @@ export default class Query {
           infiniteDescent = subExpression.isInfiniteDescent(),
           intermediateNodes = [],
           query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
+
+    return query;
+  }
+
+  static fromExpressionString(expressionString, maximumDepth = Infinity) {
+    let query = null;
+
+    const expression = Expression.fromExpressionString(expressionString);
+
+    if (expression !== null) {
+      const spread = expression.getSpread(),
+            subQuery = subQueryFromExpression(expression),
+            ruleNames = expression.getRuleNames(),
+            tokenTypes = expression.getTokenTypes(),
+            infiniteDescent = expression.isInfiniteDescent(),
+            intermediateNodes = [];
+
+      query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
+    }
 
     return query;
   }

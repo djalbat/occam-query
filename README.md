@@ -97,8 +97,8 @@ If repeatedly using the same query expression, build a `query` object and make u
 import { Query } from "occam-query";
 
 const node = ...,
-      expression = "...",
-      query = Query.fromExpression(expression)
+      expressionString = "...",
+      query = Query.fromExpressionString(expressionString)
       nodes = query.execute(node);
 
 ...

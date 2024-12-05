@@ -39,12 +39,24 @@ export default class Expression {
 
   isInfiniteDescent() { return this.path.isInfiniteDescent(); }
 
-  static fromExpressionString(string) {
+  static fromExpressionNode(expressionNode) {
+    const pathNode = pathNodeFromExpressionNode(expressionNode),
+          spreadNode = spreadNodeFromExpressionNode(expressionNode),
+          subExpressionNode = subExpressionNodeFromExpressionNode(expressionNode),
+          path = Path.fromPathNode(pathNode),
+          spread = Spread.fromSpreadNode(spreadNode),
+          subExpression = SubExpression.fromSubExpressionNode(subExpressionNode),
+          expression = new Expression(path, spread, subExpression);
+
+    return expression;
+  }
+
+  static fromExpressionString(expressionString) {
     let expression = null;
 
     const lexer = expressionLexer,  ///
           parser = expressionParser,  ///
-          content = string, ///
+          content = expressionString, ///
           tokens = lexer.tokenise(content),
           node = parser.parse(tokens);
 

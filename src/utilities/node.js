@@ -1,35 +1,48 @@
 "use strict";
 
-import { first, second, third, last } from "../utilities/array";
 import { ERROR_RULE_NAME,
          INDEX_RULE_NAME,
          UNIQUE_RULE_NAME,
          SPREAD_RULE_NAME,
          END_INDEX_RULE_NAME,
          RULE_NAME_RULE_NAME,
-         START_INDEX_RULE_NAME,
          TOKEN_TYPE_RULE_NAME,
+         START_INDEX_RULE_NAME,
          SUB_EXPRESSION_RULE_NAME,
          INFINITE_DESCENT_RULE_NAME } from "../ruleNames";
+
+export function indexFromIndexNode(indexNode) {
+  const nonTerminalNode = indexNode, ///
+        index = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+          const terminalNode = firstChildNode,  ///
+              content = terminalNode.getContent(),
+              index = Number(content);
+
+          return index;
+        });
+
+  return index;
+}
 
 export function ruleNamesFromPathNode(pathNode) {
   const selectorNodes = selectorNodesFromPathNode(pathNode),
         ruleNameNodes = selectorNodes.reduce((ruleNameNodes, selectorNode) => {
-          let nonTerminalNode;
+          const nonTerminalNode = selectorNode, ///
+                ruleNameNode = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+                  let ruleNameNode = null;
 
-          nonTerminalNode = selectorNode; ///
+                  const nonTerminalNode = firstChildNode, ///
+                        ruleName = nonTerminalNode.getRuleName(),
+                        ruleNameRuleNameRuleName = (ruleName === RULE_NAME_RULE_NAME);
 
-          const childNodes = nonTerminalNode.getChildNodes(),
-                firstChildNode = first(childNodes);
+                  if (ruleNameRuleNameRuleName) {
+                    ruleNameNode = nonTerminalNode; ///
+                  }
 
-          nonTerminalNode = firstChildNode; ///
+                  return ruleNameNode;
+                });
 
-          const ruleName = nonTerminalNode.getRuleName(),
-                ruleNameRuleNameRuleName = (ruleName === RULE_NAME_RULE_NAME);
-
-          if (ruleNameRuleNameRuleName) {
-            const ruleNameNode = nonTerminalNode; ///
-
+          if (ruleNameNode !== null) {
             ruleNameNodes.push(ruleNameNode);
           }
 
@@ -37,11 +50,13 @@ export function ruleNamesFromPathNode(pathNode) {
         }, []),
         ruleNames = ruleNameNodes.map((ruleNameNode) => {
           const nonTerminalNode = ruleNameNode, ///
-                childNodes = nonTerminalNode.getChildNodes(),
-                firstChildNode = first(childNodes),
-                terminalNode = firstChildNode,  ///
-                content = terminalNode.getContent(),
-                ruleName = content;
+                ruleName = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+                  const terminalNode = firstChildNode,  ///
+                        content = terminalNode.getContent(),
+                        ruleName = content; ///
+
+                  return ruleName;
+                });
 
           return ruleName;
         });
@@ -52,33 +67,36 @@ export function ruleNamesFromPathNode(pathNode) {
 export function tokenTypesFromPathNode(pathNode) {
   const selectorNodes = selectorNodesFromPathNode(pathNode),
         tokenTYpeNodes = selectorNodes.reduce((tokenTYpeNodes, selectorNode) => {
-          let nonTerminalNode;
+          const nonTerminalNode = selectorNode, ///
+                tokenTypeNode = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+                  let tokenTYpeNode = null;
 
-          nonTerminalNode = selectorNode; ///
+                  const nonTerminalNode = firstChildNode, ///
+                        ruleName = nonTerminalNode.getRuleName(),
+                        ruleNameTokenTypeRuleName = (ruleName === TOKEN_TYPE_RULE_NAME);
 
-          const childNodes = nonTerminalNode.getChildNodes(),
-                firstChildNode = first(childNodes);
+                  if (ruleNameTokenTypeRuleName) {
+                    tokenTYpeNode = nonTerminalNode; ///
+                  }
 
-          nonTerminalNode = firstChildNode; ///
+                  return tokenTYpeNode;
+                });
 
-          const ruleName = nonTerminalNode.getRuleName(),
-                ruleNameTokenTypeRuleName = (ruleName === TOKEN_TYPE_RULE_NAME);
-
-          if (ruleNameTokenTypeRuleName) {
-            const tokenTYpeNode = nonTerminalNode; ///
-
-            tokenTYpeNodes.push(tokenTYpeNode);
+          if (tokenTypeNode !== null) {
+            tokenTYpeNodes.push(tokenTypeNode);
           }
 
           return tokenTYpeNodes;
         }, []),
         tokenTypes = tokenTYpeNodes.map((tokenTypeNode) => {
-          const nonTerminalNode = tokenTypeNode, ///
-                childNodes = nonTerminalNode.getChildNodes(),
-                thirdChildNode = third(childNodes),
-                terminalNode = thirdChildNode,  ///
-                content = terminalNode.getContent(),
-                tokenType = content;
+          const nonTerminalNode = tokenTypeNode,  ///
+                tokenType = fromThirdChildNode(nonTerminalNode, (thirdChildNode) => {
+                  const terminalNode = thirdChildNode,  ///
+                        content = terminalNode.getContent(),
+                        tokenType = content;  ///
+
+                  return tokenType;
+                })
 
           return tokenType;
         });
@@ -86,40 +104,63 @@ export function tokenTypesFromPathNode(pathNode) {
   return tokenTypes;
 }
 
-export function infiniteDescentFromPathNode(pathNode) {
+export function selectorNodesFromPathNode(pathNode) {
   let nonTerminalNode;
 
   nonTerminalNode = pathNode; ///
 
-  const childNodes = nonTerminalNode.getChildNodes(),
-        secondChildNode = second(childNodes);
+  const selectorsNode = fromLastChildNode(nonTerminalNode, (lastChildNode) => {
+    const selectorsNode = lastChildNode;  ///
 
-  nonTerminalNode = secondChildNode;  ///
+    return selectorsNode;
+  });
 
-  const ruleName = nonTerminalNode.getRuleName(),
-        ruleNameInfiniteDescentRuleName = (ruleName === INFINITE_DESCENT_RULE_NAME),
-        infiniteDescent = ruleNameInfiniteDescentRuleName;  ///
+  nonTerminalNode = selectorsNode;  ///
+
+  const selectorNodes = nonTerminalNode.filterChildNode((childNode) => {
+    const childNodeNonTerminalNode = childNode.isNonTerminalNode();
+
+    if (childNodeNonTerminalNode) {
+      return true;
+    }
+  });
+
+  return selectorNodes;
+}
+
+export function infiniteDescentFromPathNode(pathNode) {
+  const nonTerminalNode = pathNode, ///
+        infiniteDescent = fromSecondChildNode(nonTerminalNode, (secondChildNode) => {
+          const nonTerminalNode = secondChildNode,  ///
+                ruleName = nonTerminalNode.getRuleName(),
+                ruleNameInfiniteDescentRuleName = (ruleName === INFINITE_DESCENT_RULE_NAME),
+                infiniteDescent = ruleNameInfiniteDescentRuleName;  ///
+
+          return infiniteDescent;
+        });
 
   return infiniteDescent;
 }
 
 export function uniqueFromSpreadNode(spreadNode) {
-  let unique = false;
+  const nonTerminalNode = spreadNode,
+        unique = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+          let unique = false;
 
-  const nonTerminalNode = spreadNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        firstChildNode = first(childNodes),
-        firstChildNodeNonTerminalNode = firstChildNode.isNonTerminalNode();
+          const firstChildNodeNonTerminalNode = firstChildNode.isNonTerminalNode();
 
-  if (firstChildNodeNonTerminalNode) {
-    const nonTerminalNode = firstChildNode, ///
-          ruleName = nonTerminalNode.getRuleName(),
-          ruleNameUniqueRuleName = (ruleName === UNIQUE_RULE_NAME);
+          if (firstChildNodeNonTerminalNode) {
+            const nonTerminalNode = firstChildNode, ///
+                  ruleName = nonTerminalNode.getRuleName(),
+                  ruleNameUniqueRuleName = (ruleName === UNIQUE_RULE_NAME);
 
-    if (ruleNameUniqueRuleName) {
-      unique = true;
-    }
-  }
+            if (ruleNameUniqueRuleName) {
+              unique = true;
+            }
+          }
+
+          return unique;
+        });
 
   return unique;
 }
@@ -127,9 +168,8 @@ export function uniqueFromSpreadNode(spreadNode) {
 export function indexFromSpreadNode(spreadNode) {
   let index = null;
 
-  const nonTerminalNode = spreadNode,
-        childNodes = nonTerminalNode.getChildNodes(),
-        indexNode = childNodes.find((childNode) => {
+  const nonTerminalNode = spreadNode, ///
+        indexNode = nonTerminalNode.findChildNode((childNode) => {
           const childNodeNonTerminalNode = childNode.isNonTerminalNode();
 
           if (childNodeNonTerminalNode) {
@@ -153,9 +193,8 @@ export function indexFromSpreadNode(spreadNode) {
 export function endIndexFromSpreadNode(spreadNode) {
   let endIndex = Infinity;
 
-  const nonTerminalNode = spreadNode,
-        childNodes = nonTerminalNode.getChildNodes(),
-        endIndexNode = childNodes.find((childNode) => {
+  const nonTerminalNode = spreadNode, ///
+        endIndexNode = nonTerminalNode.findChildNode((childNode) => {
           const childNodeNonTerminalNode = childNode.isNonTerminalNode();
 
           if (childNodeNonTerminalNode) {
@@ -174,15 +213,13 @@ export function endIndexFromSpreadNode(spreadNode) {
   }
 
   return endIndex;
-
 }
 
 export function startIndexFromSpreadNode(spreadNode) {
   let startIndex = 0;
 
   const nonTerminalNode = spreadNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        startIndexNode = childNodes.find((childNode) => {
+        startIndexNode = nonTerminalNode.findChildNode((childNode) => {
           const childNodeNonTerminalNode = childNode.isNonTerminalNode();
 
           if (childNodeNonTerminalNode) {
@@ -205,37 +242,37 @@ export function startIndexFromSpreadNode(spreadNode) {
 
 export function pathNodeFromExpressionNode(expressionNode) {
   const nonTerminalNode = expressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        firstChildNode = first(childNodes),
-        pathNode = firstChildNode;  ///
+        pathNode = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+          const pathNode = firstChildNode;  ///
+
+          return pathNode;
+        })
 
   return pathNode;
 }
 
 export function spreadNodeFromExpressionNode(expressionNode) {
-  let spreadNode = null;
-
   const nonTerminalNode = expressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        childNodesLength = childNodes.length;
+        spreadNode = fromSecondChildNode(nonTerminalNode, (secondChildNode) => {
+          let spreadNode = null;
 
-  if (childNodesLength > 1) {
-    const secondChildNode = second(childNodes),
-          secondChildNodeRuleName = secondChildNode.getRuleName(),
-          ruleNameSpreadRuleName = (secondChildNodeRuleName === SPREAD_RULE_NAME);
+          const nonTerminalNode = secondChildNode,  ///
+                ruleName = nonTerminalNode.getRuleName(),
+                ruleNameSpreadRuleName = (ruleName === SPREAD_RULE_NAME);
 
-    if (ruleNameSpreadRuleName) {
-      spreadNode = secondChildNode;  ///
-    }
-  }
+          if (ruleNameSpreadRuleName) {
+            spreadNode = secondChildNode;  ///
+          }
+
+          return spreadNode;
+        });
 
   return spreadNode;
 }
 
 export function errorNodesFromExpressionNode(expressionNode) {
   const nonTerminalNode = expressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        errorNodes = childNodes.reduce((errorNodes, childNode) => {
+        errorNodes = nonTerminalNode.reduceChildNode((errorNodes, childNode) => {
           const childNodeNonTerminalNode = childNode.isNonTerminalNode();
 
           if (childNodeNonTerminalNode) {
@@ -260,17 +297,22 @@ export function subExpressionNodeFromExpressionNode(expressionNode) {
   let subExpressionNode = null;
 
   const nonTerminalNode = expressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        childNodesLength = childNodes.length;
+        multiplicity = nonTerminalNode.getMultiplicity();
 
-  if (childNodesLength > 1) {
-    const lastChildNode = last(childNodes),
-          lastChildNodeRuleName = lastChildNode.getRuleName(),
-          ruleNameSubExpressionRuleName = (lastChildNodeRuleName === SUB_EXPRESSION_RULE_NAME);
+  if (multiplicity > 1) {
+    subExpressionNode = fromLastChildNode(nonTerminalNode, (lastChildNode) => {
+      let subExpressionNode = null;
 
-    if (ruleNameSubExpressionRuleName) {
-      subExpressionNode = lastChildNode;  ///
-    }
+      const nonTerminalNode = lastChildNode,  ///
+            ruleName = nonTerminalNode.getRuleName(),
+            ruleNameSubExpressionRuleName = (ruleName === SUB_EXPRESSION_RULE_NAME);
+
+      if (ruleNameSubExpressionRuleName) {
+        subExpressionNode = lastChildNode;  ///
+      }
+
+      return subExpressionNode;
+    });
   }
 
   return subExpressionNode;
@@ -278,9 +320,11 @@ export function subExpressionNodeFromExpressionNode(expressionNode) {
 
 export function pathNodeFromSubExpressionNode(subExpressionNode) {
   const nonTerminalNode = subExpressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        firstChildNode = first(childNodes),
-        pathNode = firstChildNode;  ///
+        pathNode = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
+          const pathNode = firstChildNode;  ///
+
+          return pathNode;
+        })
 
   return pathNode;
 }
@@ -289,17 +333,22 @@ export function spreadNodeFromSubExpressionNode(subExpressionNode) {
   let spreadNode = null;
 
   const nonTerminalNode = subExpressionNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        childNodesLength = childNodes.length;
+        multiplicity = nonTerminalNode.getMultiplicity();
 
-  if (childNodesLength > 1) {
-    const secondChildNode = second(childNodes),
-          secondChildNodeRuleName = secondChildNode.getRuleName(),
-          ruleNameSpreadRuleName = (secondChildNodeRuleName === SPREAD_RULE_NAME);
+  if (multiplicity > 1) {
+    spreadNode = fromSecondChildNode(nonTerminalNode, (secondChildNode) => {
+      let spreadNode = null;
 
-    if (ruleNameSpreadRuleName) {
-      spreadNode = secondChildNode;  ///
-    }
+      const nonTerminalNode = secondChildNode,  ///
+            ruleName = nonTerminalNode.getRuleName(),
+            ruleNameSpreadRuleName = (ruleName === SPREAD_RULE_NAME);
+
+      if (ruleNameSpreadRuleName) {
+        spreadNode = secondChildNode;  ///
+      }
+
+      return spreadNode;
+    });
   }
 
   return spreadNode;
@@ -310,55 +359,96 @@ export function subExpressionNodeFromSubExpressionNode(subExpressionNode) {
 
   subExpressionNode = null;
 
-  const childNodes = nonTerminalNode.getChildNodes(),
-        childNodesLength = childNodes.length;
+  const multiplicity = nonTerminalNode.getMultiplicity();
 
-  if (childNodesLength > 1) {
-    const lastChildNode = last(childNodes),
-          lastChildNodeRuleName = lastChildNode.getRuleName(),
-          ruleNameSubExpressionRuleName = (lastChildNodeRuleName === SUB_EXPRESSION_RULE_NAME);
+  if (multiplicity > 1) {
+    subExpressionNode = fromLastChildNode(nonTerminalNode, (lastChildNode) => {
+      let subExpressionNode = null;
 
-    if (ruleNameSubExpressionRuleName) {
-      subExpressionNode = lastChildNode;  ///
-    }
+      const nonTerminalNoe = lastChildNode, ///
+            ruleName = nonTerminalNoe.getRuleName(),
+            ruleNameSubExpressionRuleName = (ruleName === SUB_EXPRESSION_RULE_NAME);
+
+      if (ruleNameSubExpressionRuleName) {
+        subExpressionNode = lastChildNode;  ///
+      }
+
+      return subExpressionNode;
+    });
   }
 
   return subExpressionNode;
 }
 
-function indexFromIndexNode(indexNode) {
-  const nonTerminalNode = indexNode, ///
-        childNodes = nonTerminalNode.getChildNodes(),
-        firstChildNode = first(childNodes),
-        terminalNode = firstChildNode,  ///
-        content = terminalNode.getContent(),
-        index = Number(content);
+function fromFirstChildNode(nonTerminalNode, callback) {
+  let result;
 
-  return index;
-}
+  const firstIndex = 0;
 
-function selectorNodesFromPathNode(pathNode) {
-  let childNodes,
-      nonTerminalNode;
+  nonTerminalNode.forwardsSomeChildNode((childNode, index) => {
+    if (index === firstIndex) {
+      const firstChildNode = childNode; ///
 
-  nonTerminalNode = pathNode; ///
+      result = callback(firstChildNode);
 
-  childNodes = nonTerminalNode.getChildNodes();
-
-  const lastChildNode = last(childNodes),
-        selectorsNode = lastChildNode;  ///
-
-  nonTerminalNode = selectorsNode;  ///
-
-  childNodes = nonTerminalNode.getChildNodes();
-
-  const selectorNodes = childNodes.filter((childNode) => {
-    const childNodeNonTerminalNode = childNode.isNonTerminalNode();
-
-    if (childNodeNonTerminalNode) {
       return true;
     }
   });
 
-  return selectorNodes;
+  return result;
+}
+
+function fromSecondChildNode(nonTerminalNode, callback) {
+  let result;
+
+  const secondIndex = 1;
+
+  nonTerminalNode.forwardsSomeChildNode((childNode, index) => {
+    if (index === secondIndex) {
+      const firstChildNode = childNode; ///
+
+      result = callback(firstChildNode);
+
+      return true;
+    }
+  });
+
+  return result;
+}
+
+function fromThirdChildNode(nonTerminalNode, callback) {
+  let result;
+
+  const thirdIndex = 2;
+
+  nonTerminalNode.forwardsSomeChildNode((childNode, index) => {
+    if (index === thirdIndex) {
+      const thirdChildNode = childNode; ///
+
+      result = callback(thirdChildNode);
+
+      return true;
+    }
+  });
+
+  return result;
+}
+
+function fromLastChildNode(nonTerminalNode, callback) {
+  let result;
+
+  const multiplicity = nonTerminalNode.getMultiplicity(),
+        lastIndex = multiplicity - 1;
+
+  nonTerminalNode.backwardsSomeChildNode((childNode, index) => {
+    if (index === lastIndex) {
+      const thirdChildNode = childNode; ///
+
+      result = callback(thirdChildNode);
+
+      return true;
+    }
+  });
+
+  return result;
 }

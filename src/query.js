@@ -98,10 +98,9 @@ export default class Query {
       if (nodeNonTerminalNode) {
         depth++;
 
-        const nonTerminalNode = node, ///
-              childNodes = nonTerminalNode.getChildNodes();
+        const nonTerminalNode = node; ///
 
-        childNodes.forEach((childNode) => {
+        nonTerminalNode.forEachChildNode((childNode) => {
           this.find(childNode, depth, maximumDepth);
         });
       }
@@ -120,12 +119,11 @@ export default class Query {
         if (intermediateNodeNonTerminalNode) {
           depth++;
 
-          const nonTerminalNode = intermediateNode, ///
-                childNodes = nonTerminalNode.getChildNodes();
+          const nonTerminalNode = intermediateNode; ///
 
           this.subQuery.clear();
 
-          childNodes.forEach((childNode) => {
+          nonTerminalNode.forEachChildNode((childNode) => {
             this.subQuery.find(childNode, depth, maximumDepth);
           });
 

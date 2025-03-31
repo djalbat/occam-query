@@ -15,8 +15,8 @@ export function indexFromIndexNode(indexNode) {
   const nonTerminalNode = indexNode, ///
         index = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
           const terminalNode = firstChildNode,  ///
-              content = terminalNode.getContent(),
-              index = Number(content);
+                content = terminalNode.getContent(),
+                index = Number(content);
 
           return index;
         });
@@ -96,7 +96,7 @@ export function tokenTypesFromPathNode(pathNode) {
                         tokenType = content;  ///
 
                   return tokenType;
-                })
+                });
 
           return tokenType;
         });
@@ -137,7 +137,7 @@ export function infiniteDescentFromPathNode(pathNode) {
                 infiniteDescent = ruleNameInfiniteDescentRuleName;  ///
 
           return infiniteDescent;
-        });
+        }) || false;
 
   return infiniteDescent;
 }
@@ -246,7 +246,7 @@ export function pathNodeFromExpressionNode(expressionNode) {
           const pathNode = firstChildNode;  ///
 
           return pathNode;
-        })
+        });
 
   return pathNode;
 }
@@ -265,7 +265,7 @@ export function spreadNodeFromExpressionNode(expressionNode) {
           }
 
           return spreadNode;
-        });
+        }) || null;
 
   return spreadNode;
 }
@@ -348,7 +348,7 @@ export function spreadNodeFromSubExpressionNode(subExpressionNode) {
       }
 
       return spreadNode;
-    });
+    }) || null;
   }
 
   return spreadNode;

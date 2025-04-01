@@ -66,29 +66,29 @@ export function ruleNamesFromPathNode(pathNode) {
 
 export function tokenTypesFromPathNode(pathNode) {
   const selectorNodes = selectorNodesFromPathNode(pathNode),
-        tokenTYpeNodes = selectorNodes.reduce((tokenTYpeNodes, selectorNode) => {
+        tokenTypeNodes = selectorNodes.reduce((tokenTypeNodes, selectorNode) => {
           const nonTerminalNode = selectorNode, ///
                 tokenTypeNode = fromFirstChildNode(nonTerminalNode, (firstChildNode) => {
-                  let tokenTYpeNode = null;
+                  let tokenTypeNode = null;
 
                   const nonTerminalNode = firstChildNode, ///
                         ruleName = nonTerminalNode.getRuleName(),
                         ruleNameTokenTypeRuleName = (ruleName === TOKEN_TYPE_RULE_NAME);
 
                   if (ruleNameTokenTypeRuleName) {
-                    tokenTYpeNode = nonTerminalNode; ///
+                    tokenTypeNode = nonTerminalNode; ///
                   }
 
-                  return tokenTYpeNode;
+                  return tokenTypeNode;
                 });
 
           if (tokenTypeNode !== null) {
-            tokenTYpeNodes.push(tokenTypeNode);
+            tokenTypeNodes.push(tokenTypeNode);
           }
 
-          return tokenTYpeNodes;
+          return tokenTypeNodes;
         }, []),
-        tokenTypes = tokenTYpeNodes.map((tokenTypeNode) => {
+        tokenTypes = tokenTypeNodes.map((tokenTypeNode) => {
           const nonTerminalNode = tokenTypeNode,  ///
                 tokenType = fromThirdChildNode(nonTerminalNode, (thirdChildNode) => {
                   const terminalNode = thirdChildNode,  ///

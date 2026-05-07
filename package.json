@@ -1,7 +1,7 @@
 {
   "name": "occam-query",
   "author": "James Smith",
-  "version": "4.1.166",
+  "version": "4.1.167",
   "license": "MIT, Anti-996",
   "homepage": "https://github.com/djalbat/occam-query",
   "description": "Occam's query functionality.",
@@ -18,13 +18,13 @@
     "@swc/core": "1.13.20",
     "esbuild": "0.11.14",
     "easy": "^25.0.1",
-    "easy-layout": "^6.0.308",
-    "easy-with-style": "^3.0.555",
+    "easy-layout": "^6.0.309",
+    "easy-with-style": "^3.0.556",
     "express": "^4.17.1",
     "juxtapose": "^4.0.138",
     "lively-cli": "^3.0.3",
     "watchful-cli": "^1.7.91",
-    "with-style": "^5.0.299"
+    "with-style": "^5.0.301"
   },
   "scripts": {
     "start": "node ./bin/main.js",

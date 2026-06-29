@@ -38,7 +38,9 @@ const bnf = `
                             
                           )  
                           
-                          "]" ;
+                          "]" 
+                          
+                       ;
 
     selector         ::=  ruleName | tokenType ;
                        

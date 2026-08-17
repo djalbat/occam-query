@@ -4,23 +4,22 @@ import { characters } from "necessary";
 
 import Expression from "./expression";
 
-import { push, clear, includes } from "./utilities/array";
+import { push, includes } from "./utilities/array";
 
 const { WILDCARD_CHARACTER } = characters;
 
 export default class Query {
-  constructor(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes) {
+  constructor(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent) {
     this.spread = spread;
     this.subQuery = subQuery;
     this.ruleNames = ruleNames;
     this.tokenTypes = tokenTypes;
     this.maximumDepth = maximumDepth;
     this.infiniteDescent = infiniteDescent;
-    this.intermediateNodes = intermediateNodes;
   }
 
   getSpread() {
-    return this.sprea;
+    return this.spread;
   }
 
   getSubQuery() {
@@ -43,94 +42,85 @@ export default class Query {
     return this.infiniteDescent;
   }
 
-  getIntermediateNodes() {
-    return this.intermediateNodes;
-  }
-
   execute(node, depth = 0, maximumDepth = this.maximumDepth) {
     const nodes = [];
 
-    this.clear();
+    const intermediateNodes = this.find(node, depth, maximumDepth);
 
-    this.find(node, depth, maximumDepth);
-
-    this.apply(nodes, depth, maximumDepth);
+    this.apply(nodes, depth, maximumDepth, intermediateNodes);
 
     return nodes;
   }
 
-  clear() {
-    clear(this.intermediateNodes);
+  find(node, depth, maximumDepth, intermediateNodes = []) {
+    if (depth <= maximumDepth) {
+      const nodeTerminalNode = node.isTerminalNode(),
+            nodeNonTerminalNode = !nodeTerminalNode;
+
+      if (nodeTerminalNode) {
+        const terminalNode = node,  ///
+              type = terminalNode.getType(),
+              tokenType = type,
+              found = includes(this.tokenTypes, tokenType, WILDCARD_CHARACTER);
+
+        if (found) {
+          const intermediateNode = terminalNode; ///
+
+          intermediateNodes.push(intermediateNode);
+        }
+      }
+
+      if (nodeNonTerminalNode) {
+        const nonTerminalNode = node, ///
+              ruleName = nonTerminalNode.getRuleName(),
+              found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
+
+        if (found) {
+          const intermediateNode = nonTerminalNode; ///
+
+          intermediateNodes.push(intermediateNode);
+        }
+
+        if (this.infiniteDescent) {
+          depth++;
+
+          nonTerminalNode.forEachChildNode((childNode) => {
+            this.find(childNode, depth, maximumDepth, intermediateNodes);
+          });
+        }
+      }
+    }
+
+    return intermediateNodes;
   }
 
-  find(node, depth, maximumDepth) {
-    if (depth > maximumDepth) {
+  apply(nodes, depth, maximumDepth, intermediateNodes) {
+    this.spread.adjustNodes(intermediateNodes);
+
+    if (this.subQuery === null) {
+      push(nodes, intermediateNodes);
+
       return;
     }
 
-    const nodeTerminalNode = node.isTerminalNode(),
-          nodeNonTerminalNode = !nodeTerminalNode;
+    depth++;
 
-    let found;
+    intermediateNodes.forEach((intermediateNode) => {
+      const intermedidateNodeNonTerminalNode = intermediateNode.isNonTerminalNode();
 
-    if (nodeTerminalNode) {
-      const terminalNode = node,  ///
-            types = this.tokenTypes,  ///
-            type = terminalNode.getType();
-
-      found = includes(types, type, WILDCARD_CHARACTER);
-    }
-
-    if (nodeNonTerminalNode) {
-      const nonTerminalNode = node, ///
-            ruleName = nonTerminalNode.getRuleName();
-
-      found = includes(this.ruleNames, ruleName, WILDCARD_CHARACTER);
-    }
-
-    if (found) {
-      const intermediateNode = node; ///
-
-      this.intermediateNodes.push(intermediateNode);
-    }
-
-    if (this.infiniteDescent) {
-      if (nodeNonTerminalNode) {
-        depth++;
-
-        const nonTerminalNode = node; ///
+      if (intermedidateNodeNonTerminalNode) {
+        const nonTerminalNode = intermediateNode, ///
+              intermediateNodes = [];
 
         nonTerminalNode.forEachChildNode((childNode) => {
-          this.find(childNode, depth, maximumDepth);
+          const node = childNode; ///
+
+          this.subQuery.find(node, depth, maximumDepth, intermediateNodes);
         });
+
+        this.subQuery.apply(nodes, depth, maximumDepth, intermediateNodes);
       }
-    }
-  }
-
-  apply(nodes, depth, maximumDepth) {
-    this.spread.adjustNodes(this.intermediateNodes);
-
-    if (this.subQuery === null) {
-      push(nodes, this.intermediateNodes);
-    } else {
-      this.intermediateNodes.forEach((intermediateNode) => {
-        const intermediateNodeNonTerminalNode = intermediateNode.isNonTerminalNode();
-
-        if (intermediateNodeNonTerminalNode) {
-          depth++;
-
-          const nonTerminalNode = intermediateNode; ///
-
-          this.subQuery.clear();
-
-          nonTerminalNode.forEachChildNode((childNode) => {
-            this.subQuery.find(childNode, depth, maximumDepth);
-          });
-
-          this.subQuery.apply(nodes, depth, maximumDepth);
-        }
-      });
-    }
+    });
   }
 
   static fromExpression(expression, maximumDepth = Infinity) {
@@ -152,8 +142,7 @@ export default class Query {
           tokenTypes = subExpression.getTokenTypes(),
           maximumDepth = Infinity,
           infiniteDescent = subExpression.isInfiniteDescent(),
-          intermediateNodes = [],
-          query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
+          query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent);
 
     return query;
   }
@@ -168,10 +157,9 @@ export default class Query {
             subQuery = subQueryFromExpression(expression),
             ruleNames = expression.getRuleNames(),
             tokenTypes = expression.getTokenTypes(),
-            infiniteDescent = expression.isInfiniteDescent(),
-            intermediateNodes = [];
+            infiniteDescent = expression.isInfiniteDescent();
 
-      query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent, intermediateNodes);
+      query = new Query(spread, subQuery, ruleNames, tokenTypes, maximumDepth, infiniteDescent);
     }
 
     return query;

@@ -5,11 +5,13 @@ import { arrayUtilities } from "necessary";
 export const { clear, push, first, second, third, fourth, fifth, last } = arrayUtilities;
 
 export function trim(array, startIndex, endIndex) {
+  const length = array.length; ///
+
   if (startIndex < 0) {
-    const length = array.length; ///
-
     startIndex = length + startIndex; ///
+  }
 
+  if (endIndex < 0) {
     endIndex = length + endIndex; ///
   }
 
@@ -26,5 +28,13 @@ export function trim(array, startIndex, endIndex) {
 }
 
 export function includes(array, ...elements) {
-  return elements.some((element) => array.includes(element));
+  const found = elements.some((element) => {
+    const found = array.includes(element);
+
+    if (found) {
+      return true;
+    }
+  });
+
+  return found;
 }

@@ -14,9 +14,10 @@ export default class NodesTextarea extends Textarea {
         const terminalNode = node,  ///
               significantToken = terminalNode.getSignificantToken(),
               significantTokenType = significantToken.getType(),
+              significantTokenContent = significantToken.getContent(),
               tokenIndex = tokenIndexFromTerminalNodeAndTokens(terminalNode, tokens);
 
-        value = `${value}[${significantTokenType}]${tokenIndex}\n`;
+        value = `${value}${significantTokenContent} - [${significantTokenType}]${tokenIndex}\n`;
       } else {
         const nonTerminalNode = node, ///
               ruleName = nonTerminalNode.getRuleName(),

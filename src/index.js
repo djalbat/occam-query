@@ -5,3 +5,4 @@ export { default as Expression } from "./expression";
 export { default as queryUtilities } from "./utilities/query";
 export { default as ExpressionLexer } from "./expression/lexer";
 export { default as ExpressionParser } from "./expression/parser";
+export { default as expressionUtilities } from "./utilities/expression";

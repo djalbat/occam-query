@@ -3,16 +3,12 @@
 import Path from "./path";
 import Spread from "./spread";
 import SubExpression from "./subExpression";
-import ExpressionLexer from "./expression/lexer";
-import ExpressionParser from "./expression/parser";
 
+import { nodeFromExpressionString } from "./utilities/expression";
 import { pathNodeFromExpressionNode,
          spreadNodeFromExpressionNode,
          errorNodesFromExpressionNode,
          subExpressionNodeFromExpressionNode } from "./utilities/node";
-
-const expressionLexer = ExpressionLexer.fromNothing(),
-      expressionParser = ExpressionParser.fromNothing();
 
 export default class Expression {
   constructor(path, spread, subExpression) {
@@ -54,11 +50,7 @@ export default class Expression {
   static fromExpressionString(expressionString) {
     let expression = null;
 
-    const lexer = expressionLexer,  ///
-          parser = expressionParser,  ///
-          content = expressionString, ///
-          tokens = lexer.tokenise(content),
-          node = parser.parse(tokens);
+    const node = nodeFromExpressionString(expressionString);
 
     if (node !== null) {
       const expressionNode = node, ///

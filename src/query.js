@@ -85,7 +85,9 @@ export default class Query {
           depth++;
 
           nonTerminalNode.forEachChildNode((childNode) => {
-            this.find(childNode, depth, maximumDepth, intermediateNodes);
+            const node = childNode; ///
+
+            this.find(node, depth, maximumDepth, intermediateNodes);
           });
         }
       }

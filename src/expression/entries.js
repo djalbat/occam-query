@@ -8,7 +8,7 @@ const entries = [
     "number": "^[0-9]+"
   },
   {
-    "name": "^[\\w~]+"
+    "name": "^[\\w~\\-]+"
   },
   {
     "unassigned": "^."
